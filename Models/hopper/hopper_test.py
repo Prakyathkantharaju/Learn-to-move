@@ -9,16 +9,16 @@ from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckA
 import sys
 import numpy as np
 
-sys.path.append('/home/prakyathkantharaju/gitfolder/personal/mucojo/gym_envs/hopper')
+sys.path.append('gym_envs/hopper')
 env_spec ={
     'name': 'Hopper-v5',
     'model_path': 'hopper.xml',
-    'path': '/home/prakyathkantharaju/gitfolder/personal/mucojo/gym_envs/hopper',
+    'path': 'gym_envs/hopper',
     'action_space': gym.spaces.Box(low=-1, high=1, shape=(2,)),
     'observation_space': gym.spaces.Box(low=-100, high=100, shape=(6,)),
     'reward_range': (-float('inf'), float('inf')),
     'timestep': 0.01,
-    'max_time': 1000,
+    'max_time': 10,
     'max_steps': 100000,
     'render': True,
     'viewer': True
@@ -40,5 +40,8 @@ dones = False
 while not dones:
     action, _states = model.predict(obs)
     obs, rewards, dones, info = env.step(action)
-    print(rewards)
+    print(rewards, dones, env.time)
     env.render()
+
+# takes long time so be patient
+env.mujoco_env.save_video_from_frame("custom_hopper.mp4")

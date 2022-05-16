@@ -10,17 +10,17 @@ from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckA
 import sys
 import numpy as np
 
-sys.path.append('/home/prakyathkantharaju/gitfolder/personal/mucojo/gym_envs/hopper')
+sys.path.append('gym_envs/hopper')
 
 env_spec ={
     'name': 'Hopper-v5',
     'model_path': 'hopper.xml',
-    'path': '/home/prakyathkantharaju/gitfolder/personal/mucojo/gym_envs/hopper',
+    'path': 'gym_envs/hopper',
     'action_space': gym.spaces.Box(low=-1, high=1, shape=(2,)),
     'observation_space': gym.spaces.Box(low=-100, high=100, shape=(6,)),
     'reward_range': (-float('inf'), float('inf')),
     'timestep': 0.01,
-    'max_time': 1000,
+    'max_time': 100,
     'max_steps': 100000,
     'render': False,
     'viewer': True
@@ -40,7 +40,7 @@ env.initialize_simulator(env_spec)
 n_actions = env.action_space.shape[-1]
 action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions))
 
-model = PPO("MlpLnLstmPolicy", env, n_epochs=100, normalize_advantage = True,  target_kl = 0.08, clip_range=0.3, vf_coef = 0.6, verbose=2)
+model = PPO("MlpPolicy", env, n_epochs=100, normalize_advantage = True,  target_kl = 0.08, clip_range=0.3, vf_coef = 0.6, verbose=2)
 
 
 model.learn(total_timesteps=10000, log_interval=1)

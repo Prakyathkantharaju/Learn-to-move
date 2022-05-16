@@ -6,6 +6,7 @@ from __future__ import annotations
 import mujoco_py
 import numpy as np
 from mujoco_py import load_model_from_path, MjSim, MjViewer
+from mujoco_py.mjviewer import save_video
 from mujoco_py.generated import const
 
 import os
@@ -129,9 +130,10 @@ class BaseSim:
     def _setup_render(self) -> None:
         self.viewer = MjViewer(self.sim)
         self.viewer.cam.trackbodyid = self.torso_id
-        self.viewer.cam.distance = 2.5
+        self.viewer.cam.distance = 10
         self.viewer.cam.lookat[2] = 1.0
         self.viewer.cam.elevation = -20
+        self.viewer._record_video = True
 
 
     def render(self) -> None:
@@ -140,6 +142,8 @@ class BaseSim:
             # not implemented
             return 0
         self.viewer.render()
+        #print(f"frame count: {self.viewer._video_queue}")
+        
 
     def get_state(self) -> list[float]:
         state = []
@@ -154,4 +158,7 @@ class BaseSim:
         self.sim.reset()
         self._setup_params()
         self._setup_servo()
+
+    def save_video_from_frame(self, video_path: str) -> None:
+        save_video(self.viewer._video_queue, video_path, fps = 100)
         
