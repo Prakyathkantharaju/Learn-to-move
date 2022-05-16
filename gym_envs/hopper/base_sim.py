@@ -133,7 +133,7 @@ class BaseSim:
         self.viewer.cam.distance = 10
         self.viewer.cam.lookat[2] = 1.0
         self.viewer.cam.elevation = -20
-        self.viewer._record_video = True
+        # self.viewer._record_video = True
 
 
     def render(self) -> None:

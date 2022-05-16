@@ -44,4 +44,4 @@ while not dones:
     env.render()
 
 # takes long time so be patient
-env.mujoco_env.save_video_from_frame("custom_hopper.mp4")
+#env.mujoco_env.save_video_from_frame("custom_hopper.mp4")
