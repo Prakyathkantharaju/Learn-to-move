@@ -114,8 +114,7 @@ class HopperMine(gym.Env):
 
 
     def close(self):
-        #self.mujoco_env.close()
-        pass
+        self.mujoco_env.close()
 
 
  

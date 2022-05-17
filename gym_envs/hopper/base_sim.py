@@ -6,12 +6,12 @@ from __future__ import annotations
 import mujoco_py
 import numpy as np
 from mujoco_py import load_model_from_path, MjSim, MjViewer
-from mujoco_py.mjviewer import save_video
+# from mujoco_py.mjviewer import save_video
 from mujoco_py.generated import const
 
 import os
-
-
+import imageio
+import glfw
 
 
 
@@ -133,7 +133,7 @@ class BaseSim:
         self.viewer.cam.distance = 10
         self.viewer.cam.lookat[2] = 1.0
         self.viewer.cam.elevation = -20
-        # self.viewer._record_video = True
+        self.viewer._record_video = True
 
 
     def render(self) -> None:
@@ -141,6 +141,7 @@ class BaseSim:
             # raise ModuleNotFoundError("No viewer found")
             # not implemented
             return 0
+        print('in the render')
         self.viewer.render()
         #print(f"frame count: {self.viewer._video_queue}")
         
@@ -159,6 +160,37 @@ class BaseSim:
         self._setup_params()
         self._setup_servo()
 
-    def save_video_from_frame(self, video_path: str) -> None:
-        save_video(self.viewer._video_queue, video_path, fps = 100)
+    
+    def close(self, name: str = 'simulation_video.mp4') -> None:
+        if self.viewer is not None:
+            print(self.viewer._video_queue.qsize())
+            if self.viewer._video_queue.qsize() > 0:
+                print("Killing video process")
+                print(self.viewer._video_queue.qsize())
+                fps = (1 / self.viewer._time_per_render)
+                save_video(self.viewer._video_queue, name , fps)
+            glfw.destroy_window(self.viewer.window)
+            self.viewer = None
+            self._viewers = {}
+
+
+def save_video(queue, filename, fps):
+    writer = imageio.get_writer(filename, fps=fps)
+    print('start')
+    while True:
+        print('waiting', queue.qsize())
+        frame = queue.get()
+        # print(frame)
+        if queue.qsize() is 1:
+            queue.get()
+            print(queue.qsize())
+            print('done')
+            break
+        try:
+            writer.append_data(frame)
+        except:
+            pass
+    writer.close()
+    #def save_video_from_frame(self, video_path: str) -> None:
+    #save_video(self.viewer._video_queue, video_path, fps = 100)
         
