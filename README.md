@@ -9,7 +9,7 @@ Installing the depdencies
 pip install -r requirements.txt
 ```
 
-# Hopper
+# Hopper with disturbance
 Custom hopper enviroment using mujoco.
 
 ## Training
