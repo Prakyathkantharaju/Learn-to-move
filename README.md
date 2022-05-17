@@ -24,4 +24,4 @@ python Models/hopper/hopper_test.py
 ```
 
 
-gym_envs/hopper/simulation_video.mp4
+https://github.com/Prakyathkantharaju/Learn-to-move/blob/d786d8e260addff6de2782fa1400c2ac3784e58b/gym_envs/hopper/simulation_video.mp4
