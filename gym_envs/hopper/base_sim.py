@@ -17,7 +17,7 @@ import glfw
 
 class BaseSim:
 
-    def __init__(self, model_path: str, render: bool, timestep: float = 0.01):
+    def __init__(self, model_path: str, render: bool, timestep: float = 0.01, record: bool = False) -> None:
 
         print("Loading model from: {}".format(model_path))
         print(f"Current path {os.getcwd()}")
@@ -26,6 +26,7 @@ class BaseSim:
         self.sim = MjSim(self.model)
         self.torso_id = self.model.body_name2id("torso")
         self.leg_id = self.model.body_name2id("leg")
+        self.record = record
         print("Model loaded")
         print(f"ID for torso {self.torso_id}, legs {self.leg_id}")
         if render:
@@ -133,7 +134,8 @@ class BaseSim:
         self.viewer.cam.distance = 10
         self.viewer.cam.lookat[2] = 1.0
         self.viewer.cam.elevation = -20
-        self.viewer._record_video = True
+        if self.record:
+            self.viewer._record_video = True
 
 
     def render(self) -> None:

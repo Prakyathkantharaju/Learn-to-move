@@ -1,4 +1,5 @@
 # remove the warning
+from types import NoneType
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -28,9 +29,12 @@ class HopperMine(gym.Env):
     def initialize_simulator(self, kwargs: Dict[str, Any]):
         # self.action_space = gym.spaces.Box(low=np.array([-1, -1]), high=np.array([1, 1]), shape=(2,))
         # self.observation_space = gym.spaces.Box(low= np.array([0, 0, 0, 0, 0, 0]), high= np.array([100, 100, 100, 100, 100, 100]), shape=(6,))
-        os.chdir(kwargs['path'])
+        try:
+            os.chdir(kwargs['path'])
+        except FileNotFoundError:
+            print("Path not found")
         self.kwargs = kwargs
-        self.mujoco_env = BaseSim(kwargs['model_path'], kwargs['render'], kwargs['timestep'])
+        self.mujoco_env = BaseSim(kwargs['model_path'], kwargs['render'], kwargs['timestep'], kwargs['record'])
         self.viewer = kwargs['viewer']
         self.time = 0
         self._set_action_space()
@@ -45,8 +49,8 @@ class HopperMine(gym.Env):
     def _set_action_space(self):
         bounds = self.mujoco_env.model.actuator_ctrlrange.copy().astype(np.float32)
         low, high = bounds.T
-        low = np.array([ -1, -1])
-        high = np.array([ 1, 1])
+        low = np.array([ -1, -0.3])
+        high = np.array([ 1, 0.3])
         print(f"Action space: {low} {high}")
         self.action_space = gym.spaces.Box(low=low, high=high, dtype=np.float32)
         return self.action_space
@@ -77,9 +81,11 @@ class HopperMine(gym.Env):
         """
         Calculate the reward for the given state
         """
-        rewards = state[0][0]
-        rewards -= np.sqrt(np.sum(np.square(action)))
-        rewards += 1 * self.kwargs['timestep']# alive bonus
+        # print(state[0][2], state[0][0])
+        rewards = state[1][0]
+        rewards += state[0][0]
+        rewards -= np.sqrt(np.sum(np.square(action))) 
+        rewards += self.kwargs['timestep']# alive bonus
         rewards += self.mujoco_env.step_count
         return rewards
 
@@ -93,7 +99,7 @@ class HopperMine(gym.Env):
         
         # print(self.time)
         if state[0][2] < 0.1 or self.mujoco_env.step_count > self.kwargs['max_steps'] \
-            or self.time > self.kwargs['max_time']:
+            or self.time > self.kwargs['max_time'] or state[0][2] > 10 or state[0][0] < -1:
 
             print(f"rewards: {self.rewards}, time {self.time}")
             return True
@@ -105,16 +111,16 @@ class HopperMine(gym.Env):
         return self.mujoco_env.get_state()[[0,2]].flatten()
         
 
-    def seed(self, seed=None):
+    def seed(self, seed:NoneType =None):
         #self.mujoco_env.seed(seed)
         pass
 
-    def render(self, mode='human'):
+    def render(self, mode:str ='human'):
         self.mujoco_env.render()
 
 
-    def close(self):
-        self.mujoco_env.close()
+    def close(self, name: str = 'simulation_video.mp4'):
+        self.mujoco_env.close(name)
 
 
  

@@ -21,7 +21,8 @@ env_spec ={
     'max_time': 50,
     'max_steps': 100000,
     'render': True,
-    'viewer': True
+    'viewer': True,
+    'record': True
 }
 
 
