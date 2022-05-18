@@ -10,8 +10,11 @@
     <!-- <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/> -->
 		<!-- <light mode="targetbody" target="torso" /> -->
 		<geom type="plane" size="100 1 0.1" rgba=".9 0 0 1"/>
-		<body name="floor" pos="2 0 0.05" euler = "0 -0.8 0">
-			<geom type="box" size="0.5 0.1 0.05" rgba = "0.9 0.9 0.9 0.9"/>
+		<body name="floor" pos="2.5 0 0.05" euler = "0 -0.8 0">
+			<geom type="box" size="0.2 0.2 0.02" rgba = "0.9 0.9 0.9 0.9"/>
+		</body>
+		<body name="floor_1" pos="1 0 0.05" euler = "0 0.8 0">
+			<geom type="box" size="0.2 0.2 0.02" rgba = "0.9 0.9 0.9 0.9"/>
 		</body>
 		<body name="torso" pos="0 0 2">
 			<joint name="x" type="slide" pos="0 0 0" axis="1 0 0" />

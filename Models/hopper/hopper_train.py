@@ -45,7 +45,7 @@ env_checker.check_env(env)
 n_actions = env.action_space.shape[-1]
 action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions))
 
-model = PPO("MlpPolicy", env, n_steps=int(env_spec['max_time']/env_spec['timestep']), n_epochs=100, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=2)
+model = PPO("MlpPolicy", env, n_steps=int(env_spec['max_time']/env_spec['timestep']), n_epochs=1000, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1)
 
 
 print("Training...")
