@@ -24,8 +24,15 @@ python Models/hopper/hopper_test.py
 ```
 
 
-Video of the simulation
+# Video of the simulation
+
+## training
+
+https://user-images.githubusercontent.com/34353557/169610407-8e179f45-1124-4119-9d1a-8219b94cbd8e.mp4
 
 
-https://user-images.githubusercontent.com/34353557/168729908-52f0e048-4655-44c0-86e9-3eeb6129e00f.mp4
+## Test in adverse env
+
+https://user-images.githubusercontent.com/34353557/169610432-877d6f03-9ee4-4ffe-b829-7cff5f1f28be.mp4
+
 
