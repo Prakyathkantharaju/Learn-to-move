@@ -7,7 +7,9 @@ warnings.filterwarnings("ignore")
 from typing import List, Tuple, Dict, Any
 import numpy as np
 
+
 import os
+import sys
 
 # import gym
 import gym
@@ -23,9 +25,12 @@ from dm_env import specs
 class HopperMine(gym.Env):
     metadata: Dict[str, List[str]] = {'render.modes': ['human']}
 
-    def __init___(self, **kwargs):
+    def __init__(self, **kwargs):
+        print(kwargs)
 
         super(HopperMine, self).__init__()
+
+        self.initialize_simulator(kwargs)
         
         
 
@@ -33,7 +38,7 @@ class HopperMine(gym.Env):
         # self.action_space = gym.spaces.Box(low=np.array([-1, -1]), high=np.array([1, 1]), shape=(2,))
         # self.observation_space = gym.spaces.Box(low= np.array([0, 0, 0, 0, 0, 0]), high= np.array([100, 100, 100, 100, 100, 100]), shape=(6,))
         try:
-            os.chdir(kwargs['path'])
+            sys.path.append(kwargs['path'])
         except FileNotFoundError:
             print("Path not found")
         self.kwargs = kwargs
@@ -60,9 +65,8 @@ class HopperMine(gym.Env):
         # self.action_spec = self._create_action_spec(low, high)
         return self.action_space
 
-    def action_spec(self, low=np.array([-1, -0.3]), high=np.array([-1, -0.3])):
+    def action_spec(self, low=np.array([-1, -0.3]), high=np.array([1, 0.3])):
         spec = specs.BoundedArray(shape = low.shape, dtype = low.dtype, minimum = low, maximum = high)
-        print(type(spec))
         return spec
 
     def _set_observation_space(self, observation):
@@ -91,12 +95,12 @@ class HopperMine(gym.Env):
         """
         Calculate the reward for the given state
         """
-        # print(state[0][2], state[0][0])
-        rewards = state[1][0]
+        #print(state[0][2], state[0][0], state[1][0])
+        rewards = state[1][0] * 2
         rewards += state[0][0]
         rewards -= np.sqrt(np.sum(np.square(action))) 
-        rewards += self.kwargs['timestep']# alive bonus
-        rewards += self.mujoco_env.step_count
+        rewards += self.kwargs['timestep'] * 0.1# alive bonus
+        # rewards += self.mujoco_env.step_count
         return rewards
 
     def _done_state(self, state: np.ndarray) -> bool:
@@ -109,7 +113,7 @@ class HopperMine(gym.Env):
         
         # print(self.time)
         if state[0][2] < 0.1 or self.mujoco_env.step_count > self.kwargs['max_steps'] \
-            or self.time > self.kwargs['max_time'] or state[0][2] > 10 or state[0][0] < -1:
+            or self.time > self.kwargs['max_time'] or state[0][2] > 10 or state[0][0] < -2:
 
             print(f"rewards: {self.rewards}, time {self.time}")
             return True

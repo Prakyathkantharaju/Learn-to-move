@@ -86,8 +86,10 @@ class BaseSim:
         z_foot = self.sim.data.body_xpos[self.leg_id][2]
 
         # torso velocity
-        torso_vel = self.sim.data.qvel[self.torso_id]
+        torso_vel = self.sim.data.qvel[0]
+        # print(f"torso velocity: {torso_vel}")
 
+        # print(f"step count: {self.step_count}")
         if self.state == self.STATE_AIR1 and z_foot < 0.05:
             self.state = self.STATE_STANCE1
         elif self.state == self.STATE_STANCE1 and torso_vel > 0:
@@ -143,7 +145,7 @@ class BaseSim:
             # raise ModuleNotFoundError("No viewer found")
             # not implemented
             return 0
-        print('in the render')
+        # print('in the render')
         self.viewer.render()
         #print(f"frame count: {self.viewer._video_queue}")
         
