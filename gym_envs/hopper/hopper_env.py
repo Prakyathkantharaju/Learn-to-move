@@ -17,6 +17,9 @@ import mujoco_py
 from base_sim import BaseSim
 from utils import convert_observation_to_space
 
+
+from dm_env import specs
+
 class HopperMine(gym.Env):
     metadata: Dict[str, List[str]] = {'render.modes': ['human']}
 
@@ -53,7 +56,14 @@ class HopperMine(gym.Env):
         high = np.array([ 1, 0.3])
         print(f"Action space: {low} {high}")
         self.action_space = gym.spaces.Box(low=low, high=high, dtype=np.float32)
+        # making it compatible with the dm_control
+        # self.action_spec = self._create_action_spec(low, high)
         return self.action_space
+
+    def action_spec(self, low=np.array([-1, -0.3]), high=np.array([-1, -0.3])):
+        spec = specs.BoundedArray(shape = low.shape, dtype = low.dtype, minimum = low, maximum = high)
+        print(type(spec))
+        return spec
 
     def _set_observation_space(self, observation):
         self.observation_space = convert_observation_to_space(observation)

@@ -6,4 +6,6 @@
     - alive bonus.
 
 - [x] Setup reset, render for the RL env.
-- [ ] setup stable baselines for env.
+- [x] Setup stable baselines for env.
+- [ ] setup Deepmind controller for the hopper.
+- [ ] setup Deepmind mujoco model changer for the hopper.

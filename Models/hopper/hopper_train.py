@@ -14,7 +14,7 @@ sys.path.append('gym_envs/hopper')
 
 env_spec ={
     'name': 'Hopper-v5',
-    'model_path': 'hopper_no_dist.xml',
+    'model_path': 'hopper_wall.xml',
     'path': 'gym_envs/hopper',
     'action_space': gym.spaces.Box(low=-1, high=1, shape=(2,)),
     'observation_space': gym.spaces.Box(low=-100, high=100, shape=(6,)),
@@ -51,12 +51,12 @@ model = PPO("MlpPolicy", env, n_steps=int(env_spec['max_time']/env_spec['timeste
 print("Training...")
 
 model.learn(total_timesteps=1000, log_interval=1)
-model.save("custom_hopper")
+model.save("hopper_wall")
 env = model.get_env()
 
 del model # remove to demonstrate saving and loading
 
-model = PPO.load("custom_hopper")
+model = PPO.load("hopper_wall")
 
 # # turn on the viewer
 
