@@ -26,7 +26,6 @@ class HopperMine(gym.Env):
     metadata: Dict[str, List[str]] = {'render.modes': ['human']}
 
     def __init__(self, **kwargs):
-        print(kwargs)
 
         super(HopperMine, self).__init__()
 
@@ -52,14 +51,13 @@ class HopperMine(gym.Env):
         assert not done
 
         self._set_observation_space(observation)
-        print(self.observation_space.shape, 'here')
+        # print(self.observation_space.shape, 'here')
 
     def _set_action_space(self):
         bounds = self.mujoco_env.model.actuator_ctrlrange.copy().astype(np.float32)
         low, high = bounds.T
         low = np.array([ -1, -0.3])
         high = np.array([ 1, 0.3])
-        print(f"Action space: {low} {high}")
         self.action_space = gym.spaces.Box(low=low, high=high, dtype=np.float32)
         # making it compatible with the dm_control
         # self.action_spec = self._create_action_spec(low, high)
@@ -112,7 +110,7 @@ class HopperMine(gym.Env):
         """
         
         # print(self.time)
-        if state[0][2] < 0.1 or self.mujoco_env.step_count > self.kwargs['max_steps'] \
+        if state[0][2] < 0.5 or self.mujoco_env.step_count > self.kwargs['max_steps'] \
             or self.time > self.kwargs['max_time'] or state[0][2] > 10 or state[0][0] < -2:
 
             print(f"rewards: {self.rewards}, time {self.time}")

@@ -13,6 +13,7 @@ sys.path.append('gym_envs/hopper')
 env_spec ={
     'name': 'Hopper-v5',
     'model_path': 'gym_envs/hopper/hopper_wall_hard_dist.xml',
+    # 'model_path': 'gym_envs/hopper/hopper_wall.xml',
     'path': 'gym_envs/hopper',
     'action_space': gym.spaces.Box(low=-1, high=1, shape=(2,)),
     'observation_space': gym.spaces.Box(low=-100, high=100, shape=(6,)),
@@ -34,7 +35,7 @@ register(
     kwargs=env_spec
 )
 
-model = PPO.load("hopper_hard_dist.zip")
+model = PPO.load("hopper_multiple_duplicates.zip")
 # test the environment
 env  = gym.make(env_spec['name'])
 
@@ -43,7 +44,7 @@ dones = False
 while not dones:
     action, _states = model.predict(obs)
     obs, rewards, dones, info = env.step(action)
-    print(rewards, dones, env.time)
+    print(rewards, dones, env.time, obs)
     env.render()
 print("done")
 env.close()
