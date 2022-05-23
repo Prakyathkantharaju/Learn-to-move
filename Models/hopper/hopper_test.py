@@ -12,7 +12,7 @@ import numpy as np
 sys.path.append('gym_envs/hopper')
 env_spec ={
     'name': 'Hopper-v5',
-    'model_path': 'gym_envs/hopper/hopper_wall_hard_dist.xml',
+    'model_path': 'gym_envs/hopper/hopper.xml',
     # 'model_path': 'gym_envs/hopper/hopper_wall.xml',
     'path': 'gym_envs/hopper',
     'action_space': gym.spaces.Box(low=-1, high=1, shape=(2,)),
@@ -23,7 +23,7 @@ env_spec ={
     'max_steps': 100000,
     'render': True,
     'viewer': True,
-    'record': False
+    'record': True
 }
 
 
@@ -35,7 +35,7 @@ register(
     kwargs=env_spec
 )
 
-model = PPO.load("hopper_multiple_duplicates.zip")
+model = PPO.load("hopper_multiple_duplicates_2.zip")
 # test the environment
 env  = gym.make(env_spec['name'])
 
