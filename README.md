@@ -36,3 +36,19 @@ https://user-images.githubusercontent.com/34353557/169610407-8e179f45-1124-4119-
 https://user-images.githubusercontent.com/34353557/169610432-877d6f03-9ee4-4ffe-b829-7cff5f1f28be.mp4
 
 
+## Important rendering
+Important information regarding rendering the model. 
+ 
+ 
+ 
+If you are trying to render the image, please use the following command.
+
+```bash
+set -Ux LD_PRELOAD /usr/lib/x86_64-linux-gnu/libGLEW.so
+```
+
+
+Do not forget to delete the LD_PRELOAD variable.
+```bash
+unset LD_PRELOAD
+```
