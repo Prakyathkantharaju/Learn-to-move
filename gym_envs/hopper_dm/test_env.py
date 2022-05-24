@@ -5,7 +5,7 @@ from dm_control import viewer
 
 from Hopper6 import Hopper6
 
-PATH = './mujoco_models/hopper.xml'
+PATH = './mujoco_models/hopper_parkour.xml'
 
 
 environment_kwargs = 	{'alive_bonus': 0.5,
@@ -27,4 +27,8 @@ def random_policy(time_step):
 							size=np.array([4]))
 
 # Launch the viewer application.
-viewer.launch(env, policy=random_policy)
+# viewer.launch(env, policy=random_policy)
+env.reset()
+
+step, reward, discount, obs = env.step(random_policy(None))
+print(obs)

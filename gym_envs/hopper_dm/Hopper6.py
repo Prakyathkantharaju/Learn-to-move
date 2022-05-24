@@ -103,7 +103,7 @@ class HopperParkour(base.Task):
 		img = physics.render(height=256, width=256)
 		img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 		img = cv2.resize(img, (256 * self._observation_scale, 256 * self._observation_scale))
-		return img
+		return img.flatten()
 
 
 	def _get_state(self, physics):
