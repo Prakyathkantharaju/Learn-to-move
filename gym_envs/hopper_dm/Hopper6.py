@@ -1,28 +1,63 @@
+from types import NoneType
+from xmlrpc.client import Boolean
+import gym
 from dm_control import mujoco
 from dm_control import viewer
 from dm_control.rl import control
 from dm_control.suite import base
+
+from gym.spaces import Dict, Box
+
 import numpy as np
 
+import collections
 
 
 # loading the cv2 to resize the render
 import cv2
+from torch import DictType
 
 
 
 def get_model_and_assets_xml():
 	""" Get the xml path of the model and assets and load them into Mujoco. """
-	return open('gym_envs/hopper_dm/mujoco_models/hopper.xml', 'r').read()
+	return open('gym_envs/hopper_dm/mujoco_models/hopper_parkour.xml', 'r').read()
 
-def Hopper6(time_limit=10, random=None, environment_kwargs=None):
+def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType|DictType=None):
 	xml_string = get_model_and_assets_xml()
 	physics = mujoco.Physics.from_xml_string(xml_string)
 	pixels = physics.render()
 	environment_kwargs = environment_kwargs or {}
 	task = HopperParkour(physics, random=None, environment_kwargs=environment_kwargs)
-	return control.Environment(physics, task=task, time_limit=time_limit)
+	return HopperEnv(physics, task=task, time_limit=time_limit)
 
+
+
+
+# Creating a env with
+class HopperEnv(control.Environment, gym.Env):
+	def __init__(self, physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
+					n_sub_steps:NoneType=None, flat_observation:bool=False):
+		super().__init__(physics, task, time_limit)
+		super(gym.Env, self).__init__()
+		self._set_observation_space()
+
+	def _set_observation_space(self):
+		obs = self.task.get_observation(self.physics)
+		if self.task._observation_mode == 'render':
+			shape_ = obs['render'].shape[0]
+			shape_data = Box( low = 0, high = 255, shape = (shape_,))
+			self.observation_space = Dict({"render":shape_data})
+		elif self.task._observation_mode == 'state':
+			shape_ = obs['state'].shape[0]
+			shape_data = Box( low = -np.inf, high = np.inf, shape = (shape_,))
+			self.observation_space = Dict({"state":shape_data})
+		
+		# set action space
+		self.action_space = Box(low = -1, high=1, shape = (2,))
+
+			
+		
 
 
 
@@ -81,7 +116,7 @@ class HopperParkour(base.Task):
 		Reward for traveling forward.
 		"""
 		reward = 0
-		reward += self._physics.named.data.xpos[['torso'] , 'x']
+		reward += self._physics.named.data.xpos[['torso'] , 'x'].tolist()[0]
 		return reward
 
 
@@ -89,10 +124,13 @@ class HopperParkour(base.Task):
 		"""
 		Returns an observation of the state.
 		"""
+		obs = collections.OrderedDict()
 		if self._observation_mode == 'render':
-			return self._get_render(physics)
+			obs['render'] = self._get_render(physics)
+			return obs
 		elif self._observation_mode == 'state':
-			return self._get_state(physics)
+			obs['state'] = self._get_state(physics)
+			return obs
 		else:
 			raise NotImplementedError
 
