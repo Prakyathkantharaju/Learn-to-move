@@ -132,3 +132,8 @@ dmypy.json
 
 # wandb
 wandb/
+
+Models/hopper/*
+
+
+*.zip
