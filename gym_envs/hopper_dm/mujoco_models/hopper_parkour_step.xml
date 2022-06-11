@@ -13,19 +13,19 @@
 	
 		<!-- <geom type="plane" size="100 1 0.1" rgba=".9 0 0 1"/> -->
 			<body name="platform_1" pos="0 0 0.5" euler = "0 0 0">
-				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
+				<geom type="box" size="0.7 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
 			</body>
-			<body name="platform_2" pos="1 0 0.5" euler = "0 0 0">
-				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
+			<body name="platform_2" pos="1 0 0.4" euler = "0 0 0">
+				<geom type="box" size="0.7 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
 			</body>
 			<body name="platform_3" pos="2 0 0.5" euler = "0 0 0">
-				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
+				<geom type="box" size="0.7 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
 			</body>
-			<body name="platform_4" pos="3 0 0.5" euler = "0 0 0">
-				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
+			<body name="platform_4" pos="3 0 0.4" euler = "0 0 0">
+				<geom type="box" size="0.7 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
 			</body>
 			<body name="platform_5" pos="4 0 0.5" euler = "0 0 0">
-				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
+				<geom type="box" size="0.7 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
 			</body>
 			<body name="platform_6" pos="5 0 0.5" euler = "0 0 0">
 				<geom type="box" size="0.2 0.2 0.5" rgba = "0.39 0.26 0.12 1"/>				
@@ -48,7 +48,7 @@
 
 	<actuator>
 		<position name="pservo-hip" joint="hip" kp="1" ctrllimited="false" ctrlrange ="0 3.14"/>
-		<position name="pservo-knee" joint="knee" kv="1" ctrllimited="false" lengthrange="0 1" />
+		<position name="pservo-knee" joint="knee" kp="1" ctrllimited="false" lengthrange="0 1" />
 	</actuator>
 
 

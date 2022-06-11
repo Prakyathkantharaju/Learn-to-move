@@ -19,12 +19,12 @@ from torch import DictType
 
 
 
-def get_model_and_assets_xml():
+def get_model_and_assets_xml(path:str):
 	""" Get the xml path of the model and assets and load them into Mujoco. """
-	return open('gym_envs/hopper_dm/mujoco_models/hopper_parkour.xml', 'r').read()
+	return open(path, 'r').read()
 
 def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType|DictType=None):
-	xml_string = get_model_and_assets_xml()
+	xml_string = get_model_and_assets_xml(environment_kwargs['path'])
 	physics = mujoco.Physics.from_xml_string(xml_string)
 	pixels = physics.render()
 	environment_kwargs = environment_kwargs or {}
@@ -121,8 +121,8 @@ class HopperParkour(base.Task):
 		reward = 0
 		reward += self._physics.named.data.xpos[['torso'] , 'x'][0]
 		# reward += self._physics.named.data.xpos[['torso'], 'z'][0]
-		if self._physics.named.data.xpos[['torso'] , 'x'][0] < 1:
-			reward = 1 - self._physics.named.data.xpos[['torso'] , 'x'][0]
+		# if self._physics.named.data.xpos[['torso'] , 'x'][0] < 1:
+		# 	reward = 1 - self._physics.named.data.xpos[['torso'] , 'x'][0]
 		return reward
 
 
@@ -132,7 +132,7 @@ class HopperParkour(base.Task):
 		"""
 		obs = collections.OrderedDict()
 		if self._observation_mode == 'render':
-			obs['image'] = self._get_render(physics)
+			obs = {'image':  self._get_render(physics)}
 			return obs
 		elif self._observation_mode == 'state':
 			obs['state'] = self._get_state(physics)
@@ -144,15 +144,17 @@ class HopperParkour(base.Task):
 		"""
 		Returns an observation of the state.
 		"""
-		image = physics.render(camera_id = "camera", segmentation = True)
+		image = physics.render(camera_id = "camera", depth = True)
 
 		# print(image.shape)
 		# Display the contents of the first channel, which contains object
 		# IDs. The second channel, seg[:, :, 1], contains object types.
-		geom_ids = image[:, :, 0]
+		geom_ids = image
 		# Infinity is mapped to -1
+		
 		geom_ids = geom_ids.astype(np.float64) + 1
 		# Scale to [0, 1]
+		# print(geom_ids.shape)
 		geom_ids = geom_ids / geom_ids.max()
 		pixels = 255*geom_ids
 		img = pixels.astype(np.uint8)
@@ -164,13 +166,14 @@ class HopperParkour(base.Task):
 		"""
 		return physics.named.data.qpos[['torso']]
 
-	# def get_termination(self, physics) -> bool|NoneType:
-	# 	get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
-	# 	if get_z_distance > 0.5:
-	# 		discount = 
-	# 	else:
-	# 		# no discount
-	# 		return None
+	def get_termination(self, physics) -> bool|NoneType:
+		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
+		
+		if get_z_distance < 0.5:
+			return 1
+		else:
+			# no discount
+			return None
 		
 		
 

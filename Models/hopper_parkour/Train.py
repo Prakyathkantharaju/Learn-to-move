@@ -50,9 +50,49 @@ environment_kwargs = 	{'alive_bonus': 0.5,
 						'velocity_cost': 0.0,
 						'time_limit': 10,
 						'position_reward':True,
-						'observation_mode':'render'}
+						'observation_mode':'render',
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour.xml'}
 
 env = Hopper6(environment_kwargs=environment_kwargs)
+
+environment_kwargs = 	{'alive_bonus': 0.5,
+						'velocity_cost': 0.0,
+						'time_limit': 10,
+						'position_reward':True,
+						'observation_mode':'render',
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_plain.xml'}
+
+env_1 = Hopper6(environment_kwargs=environment_kwargs)
+
+
+environment_kwargs = 	{'alive_bonus': 0.5,
+						'velocity_cost': 0.0,
+						'time_limit': 10,
+						'position_reward':True,
+						'observation_mode':'render',
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_step.xml'}
+
+env_2 = Hopper6(environment_kwargs=environment_kwargs)
+
+
+environment_kwargs = 	{'alive_bonus': 0.5,
+						'velocity_cost': 0.0,
+						'time_limit': 10,
+						'position_reward':True,
+						'observation_mode':'render',
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_gaps.xml'}
+
+env_3 = Hopper6(environment_kwargs=environment_kwargs)
+
+environment_kwargs = 	{'alive_bonus': 0.5,
+						'velocity_cost': 0.0,
+						'time_limit': 10,
+						'position_reward':True,
+						'observation_mode':'render',
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_climb.xml'}
+
+env_4 = Hopper6(environment_kwargs=environment_kwargs)
+
 
 
 action_spec = env.action_spec()
@@ -76,22 +116,82 @@ def make_env(seed=0):
 		env.reset()
 
 		env.seed(seed)
+		print(f"env seed: {seed}")
 		return env
 	
 	set_random_seed(seed)
 	return _init
 
-env_list = [make_env(i) for i in range(1,10)]
-train_env = SubprocVecEnv(env_list, start_method='fork')
+def make_env_1(seed=0):
+	"""
+	Create a wrapped, monitored SubprocVecEnv for Hopper
+	"""
+	def _init():
+		env_1.reset()
+
+		env_1.seed(seed)
+		print(f"env_1 seed: {seed}")
+		return env_1
+	
+	set_random_seed(seed)
+	return _init
+
+def make_env_2(seed=0):
+	"""
+	Create a wrapped, monitored SubprocVecEnv for Hopper
+	"""
+	def _init():
+		env_2.reset()
+
+		env_2.seed(seed)
+		print(f"env_2 seed: {seed}")
+		return env_2
+	
+	set_random_seed(seed)
+	return _init
+
+def make_env_3(seed=0):
+	"""
+	Create a wrapped, monitored SubprocVecEnv for Hopper
+	"""
+	def _init():
+		env_3.reset()
+
+		env_3.seed(seed)
+		print(f"env_2 seed: {seed}")
+		return env_3
+	
+	set_random_seed(seed)
+	return _init
+
+def make_env_4(seed=0):
+	"""
+	Create a wrapped, monitored SubprocVecEnv for Hopper
+	"""
+	def _init():
+		env_4.reset()
+
+		env_4.seed(seed)
+		print(f"env_2 seed: {seed}")
+		return env_4
+	
+	set_random_seed(seed)
+	return _init
+
+if __name__ == '__main__':
+	env_list = [make_env(0), make_env_1(1), make_env_2(2), 
+	make_env_3(6), make_env_4(2)]
+	train_env = DummyVecEnv(env_list)
 
 
-model = PPO("MultiInputPolicy", env, n_steps=int(environment_kwargs['time_limit']/0.01), 
-			n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
-			tensorboard_log=f"Models/hopper/runs/{run.id}")
+	model = PPO("MultiInputPolicy", train_env, n_steps=1000, 
+				n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
+				tensorboard_log=f"Models/hopper/runs/{run.id}")
+	model.load("Models_parkour_large_1")
 
-model.learn(total_timesteps=100000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
-								model_save_path=f"Models/hopper/models/{run.id}", verbose=2))
+	model.learn(total_timesteps=500000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
+									model_save_path=f"Models/hopper/models/{run.id}", verbose=2))
 
 
-model.save("Models_parkour_large")
-run.finish()
+	# model.save("Models_parkour_large_1")
+	run.finish()

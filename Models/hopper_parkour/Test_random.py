@@ -45,7 +45,7 @@ environment_kwargs = 	{'alive_bonus': 0.5,
 						'time_limit': 100,
 						'position_reward':True,
 						'observation_mode':'render',
-						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_gaps.xml'}
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_plain.xml'}
 
 env = Hopper6(environment_kwargs=environment_kwargs)
 
@@ -67,19 +67,27 @@ img = pixels.astype(np.uint8)
 plt.imshow(img)
 plt.show()
 
-model = PPO("MultiInputPolicy", env, n_steps=int(environment_kwargs['time_limit']/0.01), 
-			n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1)
+# model = PPO("MultiInputPolicy", env, n_steps=int(environment_kwargs['time_limit']/0.01), 
+# 			n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1)
 
-model.load("Models_parkour_large_1")
+# model.load("Models_parkour_large_1")
 
-_, _, _, obs = env.reset()
-print(obs)
+# _, _, _, obs = env.reset()
+# print(obs)
 
 
 render_store = []
 fig, ax = plt.subplots(1, 1)
-for _ in range(1000):
-	actions = model.predict(obs)
+for i in range(1000):
+	# actions = model.predict(obs)
+	actions = np.random.rand(2)
+	actions = np.clip(actions, -1, 1)
+	if i % 2 == 0:
+		actions[0] = 0
+		actions[1] = 0
+	else:
+		actions[0] = -1
+		actions[1] = 1
 	timestep, reward, discount, obs = env.step(actions)
 	render_store.append(env._physics.render(camera_id = "camera"))
 	print(reward)
