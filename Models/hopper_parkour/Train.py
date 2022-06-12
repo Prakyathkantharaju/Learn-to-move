@@ -179,14 +179,14 @@ def make_env_4(seed=0):
 	return _init
 
 if __name__ == '__main__':
-	# env_list = [make_env(0), make_env_1(1), make_env_2(2), 
-	# make_env_3(6), make_env_4(2)]
+	env_list = [make_env(0), make_env_1(1), make_env_2(2), 
+	make_env_3(6), make_env_4(2)]
 
 	check_env(env)
 	env_list = [make_env(0), make_env_1(1)]
 
-	train_env = SubprocVecEnv(env_list, start_method='fork')
-	# train_env = DummyVecEnv(env_list)
+	# train_env = SubprocVecEnv(env_list, start_method='fork')
+	train_env = DummyVecEnv(env_list)
 	train_env = VecVideoRecorder(train_env, video_folder=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
 
 

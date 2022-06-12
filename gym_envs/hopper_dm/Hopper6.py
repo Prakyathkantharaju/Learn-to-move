@@ -131,7 +131,7 @@ class HopperEnvWrapper(gym.Env):
 	def step(self, action):
 		timestep, reward, discount, obs =  self.env.step(action)
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
-		print(obs['image'].shape)
+		# print(obs['image'].shape)
 		return obs, reward, done, info
 
 	def reset(self):
