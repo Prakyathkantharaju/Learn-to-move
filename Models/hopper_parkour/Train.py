@@ -187,7 +187,7 @@ if __name__ == '__main__':
 
 	# train_env = SubprocVecEnv(env_list, start_method='fork')
 	train_env = DummyVecEnv(env_list)
-	train_env = VecVideoRecorder(train_env, video_folder=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
+	# train_env = VecVideoRecorder(train_env, video_folder=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
 
 
 	model = PPO("MultiInputPolicy", train_env, n_steps=200, 
