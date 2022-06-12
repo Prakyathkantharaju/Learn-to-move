@@ -227,7 +227,6 @@ class HopperParkour(base.Task):
 		obs = collections.OrderedDict()
 		if self._observation_mode == 'render':
 			obs = {'image':  self._get_render(physics)}
-			print(obs['image'].shape)
 			return obs
 		elif self._observation_mode == 'state':
 			obs['state'] = self._get_state(physics)
