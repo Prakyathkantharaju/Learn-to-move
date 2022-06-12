@@ -6,6 +6,7 @@ from dm_control import viewer
 from dm_control.rl import control
 from dm_control.suite import base
 from dm_control import mjcf
+import dm_env
 
 from gym.spaces import Dict, Box
 
@@ -40,7 +41,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	physics = mjcf.Physics.from_mjcf_model(model)
 	environment_kwargs = environment_kwargs or {}
 	task = HopperParkour(physics, random=None, environment_kwargs=environment_kwargs)
-	return HopperEnv(physics, task=task, time_limit=time_limit, control_timestep=0.1)
+	return HopperEnvWrapper(physics, task=task, time_limit=time_limit, control_timestep=0.1)
 
 
 # TODO: change the location when refactor.
@@ -91,29 +92,65 @@ def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple 
 
 
 # Creating a env with
-class HopperEnv(control.Environment, gym.Env):
+class HopperEnv(control.Environment):
 	def __init__(self, physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
 					n_sub_steps:NoneType=None, flat_observation:bool=False):
 		super().__init__(physics, task, time_limit, control_timestep=control_timestep)
-		super(gym.Env, self).__init__()
+
+
+
+
+
+
+# this is bad but I have to use subvecprocess but it does not account for the timestep of dm_control env.
+class HopperEnvWrapper(gym.Env):
+	metadata = {'render.modes': ['human']}
+	def __init__(self,  physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
+					n_sub_steps:NoneType=None, flat_observation:bool=False):
+		
+		self.env = HopperEnv(physics, task, time_limit, control_timestep, n_sub_steps, flat_observation)
+		super(HopperEnvWrapper, self).__init__()
 		self._set_observation_space()
 
 	def _set_observation_space(self):
-		obs = self.task.get_observation(self.physics)
-		if self.task._observation_mode == 'render':
+		obs = self.env.task.get_observation(self.env.physics)
+		if self.env.task._observation_mode == 'render':
 			shape_1 = obs['image'].shape[0]
 			shape_2 = obs['image'].shape[1]
 			shape_3 = obs['image'].shape[2]
 			shape_data = Box( low = 0, high = 255, shape = (shape_1, shape_2,shape_3))
-			self.observation_space = Dict({"image":shape_data})
-			# self.observation_space = shape_data
-		elif self.task._observation_mode == 'state':
+			self.observation_space = Dict({'image':shape_data})
+		elif self.env.task._observation_mode == 'state':
 			shape_ = obs['state'].shape[0]
 			shape_data = Box( low = -np.inf, high = np.inf, shape = (shape_,))
 			self.observation_space = Dict({"state":shape_data})
 		
 		# set action space
 		self.action_space = Box(low = -1, high=1, shape = (2,))
+
+	def step(self, action):
+		timestep, reward, discount, obs =  self.env.step(action)
+		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
+		return obs, reward, done, info
+
+	def reset(self):
+		timestep, reward, discount, obs =  self.env.reset()
+		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
+		return obs
+		
+	def render(self, mode='human'):
+		return self.env.render(mode)
+
+
+	def _convert_output(self, timestep, reward, discount, obs):
+		# Convert output from dm_control to gym format
+		if timestep == dm_env.StepType.LAST:
+			return obs, reward, True, {}
+		else:
+			return obs, reward, False, {}	
+
+			 
+
 
 			
 		
@@ -189,6 +226,7 @@ class HopperParkour(base.Task):
 		obs = collections.OrderedDict()
 		if self._observation_mode == 'render':
 			obs = {'image':  self._get_render(physics)}
+			print(obs['image'].shape)
 			return obs
 		elif self._observation_mode == 'state':
 			obs['state'] = self._get_state(physics)

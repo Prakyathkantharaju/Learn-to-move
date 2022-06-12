@@ -12,6 +12,7 @@ import sys
 import numpy as np
 
 
+from stable_baselines3.common.env_checker import check_env
 
 # # load wandb
 import wandb
@@ -94,7 +95,7 @@ env_4 = Hopper6(environment_kwargs=environment_kwargs)
 
 
 
-action_spec = env.action_spec()
+action_spec = env.env.action_spec()
 #env_checker.check_env(env)
 
 # Define a uniform random policy.
@@ -181,11 +182,12 @@ if __name__ == '__main__':
 	# env_list = [make_env(0), make_env_1(1), make_env_2(2), 
 	# make_env_3(6), make_env_4(2)]
 
-	env_list = [make_env(0)]
+	check_env(env)
+	env_list = [make_env(0), make_env_1(1)]
 
 	train_env = SubprocVecEnv(env_list, start_method='fork')
 	# train_env = DummyVecEnv(env_list)
-	train_env = VecVideoRecorder(train_env, video_dir=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
+	train_env = VecVideoRecorder(train_env, video_folder=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
 
 
 	model = PPO("MultiInputPolicy", train_env, n_steps=200, 
@@ -193,7 +195,7 @@ if __name__ == '__main__':
 				tensorboard_log=f".run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
-	model.learn(total_timesteps=500000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
+	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
 									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 
