@@ -1,10 +1,9 @@
-from atexit import register
 import gym
 from gym.envs.registration import register
 from stable_baselines3 import PPO, A2C, DDPG
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common import env_checker
-from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
+from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecVideoRecorder
 
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
 from stable_baselines3.common.utils import set_random_seed
@@ -179,19 +178,24 @@ def make_env_4(seed=0):
 	return _init
 
 if __name__ == '__main__':
-	env_list = [make_env(0), make_env_1(1), make_env_2(2), 
-	make_env_3(6), make_env_4(2)]
-	train_env = DummyVecEnv(env_list)
+	# env_list = [make_env(0), make_env_1(1), make_env_2(2), 
+	# make_env_3(6), make_env_4(2)]
+
+	env_list = [make_env(0)]
+
+	train_env = SubprocVecEnv(env_list, start_method='fork')
+	# train_env = DummyVecEnv(env_list)
+	train_env = VecVideoRecorder(train_env, video_dir=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
 
 
-	model = PPO("MultiInputPolicy", train_env, n_steps=1000, 
+	model = PPO("MultiInputPolicy", train_env, n_steps=200, 
 				n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
-				tensorboard_log=f"Models/hopper/runs/{run.id}")
-	model.load("Models_parkour_large_1")
+				tensorboard_log=f".run_logs/logs/{run.id}")
+	# model.load("Models_parkour_large_1")
 
 	model.learn(total_timesteps=500000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
-									model_save_path=f"Models/hopper/models/{run.id}", verbose=2))
+									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 
-	# model.save("Models_parkour_large_1")
+	model.save(f"./run_logs/models/model_safe.pkl")
 	run.finish()
