@@ -5,6 +5,7 @@ from dm_control import mujoco
 from dm_control import viewer
 from dm_control.rl import control
 from dm_control.suite import base
+from dm_control import mjcf
 
 from gym.spaces import Dict, Box
 
@@ -25,11 +26,66 @@ def get_model_and_assets_xml(path:str):
 
 def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType|DictType=None):
 	xml_string = get_model_and_assets_xml(environment_kwargs['path'])
-	physics = mujoco.Physics.from_xml_string(xml_string)
-	pixels = physics.render()
+	model = mjcf.from_path(environment_kwargs['path'])
+	
+	# get hip joint
+	# Need to add this in the environment_kwargs
+	hip_joint = model.find('joint', 'hip')
+	hip_joint = add_position_actuator(hip_joint, [-3.14, 3.14], [-1, 1])
+	knee_joint = model.find('joint', 'knee')
+	knee_joint = add_position_actuator(knee_joint, [-1.5, 1.5], [-1, 1])
+
+
+	# physics = mujoco.Physics.from_xml_string(xml_string)
+	physics = mjcf.Physics.from_mjcf_model(model)
 	environment_kwargs = environment_kwargs or {}
 	task = HopperParkour(physics, random=None, environment_kwargs=environment_kwargs)
-	return HopperEnv(physics, task=task, time_limit=time_limit, control_timestep=0.01)
+	return HopperEnv(physics, task=task, time_limit=time_limit, control_timestep=0.1)
+
+
+# TODO: change the location when refactor.
+# copied from https://github.com/deepmind/dm_control/blob/main/dm_control/locomotion/walkers/scaled_actuators.py
+def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple =(-1, 1),
+                          kp:int=1.0, **kwargs):
+  """Adds a scaled position actuator that is bound to the specified element.
+  This is equivalent to MuJoCo's built-in `<position>` actuator where an affine
+  transformation is pre-applied to the control signal, such that the minimum
+  control value corresponds to the minimum desired position, and the
+  maximum control value corresponds to the maximum desired position.
+  Args:
+    target: A PyMJCF joint, tendon, or site element object that is to be
+      controlled.
+    qposrange: A sequence of two numbers specifying the allowed range of target
+      position.
+    ctrlrange: A sequence of two numbers specifying the allowed range of
+      this actuator's control signal.
+    kp: The gain parameter of this position actuator.
+    **kwargs: Additional MJCF attributes for this actuator element.
+      The following attributes are disallowed: `['biastype', 'gainprm',
+      'biasprm', 'ctrllimited', 'joint', 'tendon', 'site',
+      'slidersite', 'cranksite']`.
+  Returns:
+    A PyMJCF actuator element that has been added to the MJCF model containing
+    the specified `target`.
+  Raises:
+    TypeError: `kwargs` contains an unrecognized or disallowed MJCF attribute,
+      or `target` is not an allowed MJCF element type.
+  """
+#   _check_target_and_kwargs(target, **kwargs)
+  kwargs[target.tag] = target
+
+  slope = (qposrange[1] - qposrange[0]) / (ctrlrange[1] - ctrlrange[0])
+  g0 = kp * slope
+  b0 = kp * (qposrange[0] - slope * ctrlrange[0])
+  b1 = -kp
+  b2 = 0
+  return target.root.actuator.add('general',
+                                  biastype='affine',
+                                  gainprm=[g0],
+                                  biasprm=[b0, b1, b2],
+                                  ctrllimited=True,
+                                  ctrlrange=ctrlrange,
+                                  **kwargs)
 
 
 
