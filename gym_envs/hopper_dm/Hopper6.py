@@ -28,7 +28,7 @@ def get_model_and_assets_xml(path:str):
 def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType|DictType=None):
 	xml_string = get_model_and_assets_xml(environment_kwargs['path'])
 	model = mjcf.from_path(environment_kwargs['path'])
-	
+
 	# get hip joint
 	# Need to add this in the environment_kwargs
 	hip_joint = model.find('joint', 'hip')
@@ -93,7 +93,7 @@ def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple 
 
 # Creating a env with
 class HopperEnv(control.Environment):
-	def __init__(self, physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
+	def __init__(self, physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None,
 					n_sub_steps:NoneType=None, flat_observation:bool=False):
 		super().__init__(physics, task, time_limit, control_timestep=control_timestep)
 
@@ -105,9 +105,9 @@ class HopperEnv(control.Environment):
 # this is bad but I have to use subvecprocess but it does not account for the timestep of dm_control env.
 class HopperEnvWrapper(gym.Env):
 	metadata = {"render.modes": ["human", "rgb_array"], "video.frames_per_second": int(1/0.05)}
-	def __init__(self,  physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
+	def __init__(self,  physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None,
 					n_sub_steps:NoneType=None, flat_observation:bool=False):
-		
+
 		self.env = HopperEnv(physics, task, time_limit, control_timestep, n_sub_steps, flat_observation)
 		super(HopperEnvWrapper, self).__init__()
 		self._set_observation_space()
@@ -124,7 +124,7 @@ class HopperEnvWrapper(gym.Env):
 			shape_ = obs['state'].shape[0]
 			shape_data = Box( low = -np.inf, high = np.inf, shape = (shape_,))
 			self.observation_space = Dict({"state":shape_data})
-		
+
 		# set action space
 		self.action_space = Box(low = -1, high=1, shape = (2,))
 
@@ -148,13 +148,13 @@ class HopperEnvWrapper(gym.Env):
 		if timestep == dm_env.StepType.LAST:
 			return obs, reward, True, {}
 		else:
-			return obs, reward, False, {}	
-
-			 
+			return obs, reward, False, {}
 
 
-			
-		
+
+
+
+
 
 
 
@@ -168,7 +168,7 @@ class HopperParkour(base.Task):
 			self._alive_bonus = environment_kwargs.get('alive_bonus')
 		else:
 			self._alive_bonus = 0
-		
+
 		if environment_kwargs.get('velocity_cost') is not None:
 			self._velocity_cost = environment_kwargs.get('velocity_cost')
 		else:
@@ -193,7 +193,7 @@ class HopperParkour(base.Task):
 			self._observation_scale  = 0.5
 		else:
 			self._observation_scale = 1
-			
+
 		super().__init__(random)
 
 
@@ -246,7 +246,7 @@ class HopperParkour(base.Task):
 		# IDs. The second channel, seg[:, :, 1], contains object types.
 		geom_ids = image
 		# Infinity is mapped to -1
-		
+
 		geom_ids = geom_ids.astype(np.float64) + 1
 		# Scale to [0, 1]
 		# print(geom_ids.shape)
@@ -263,14 +263,15 @@ class HopperParkour(base.Task):
 
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
-		
+
 		if get_z_distance < 1.2:
+			print(physics.named.data.xpos[['torso'], 'x'][0])
 			return 1
 		else:
 			# no discount
 			return None
-		
-		
 
 
-		
+
+
+

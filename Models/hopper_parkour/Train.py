@@ -196,7 +196,7 @@ if __name__ == '__main__':
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
-	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1,  model_save_freq=1000,
+	model.learn(total_timesteps=500000, log_interval=1, callback=WandbCallback(gradient_save_freq=1,  model_save_freq=1000,
 									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 
