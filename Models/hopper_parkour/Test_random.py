@@ -40,6 +40,7 @@ config = {
 PATH = 'gym_env/hopper_dm/mujoco_models/hopper_parkour_plain.xml'
 
 
+
 environment_kwargs = 	{'alive_bonus': 0.5,
 						'velocity_cost': 0.0,
 						'time_limit': 100,
@@ -50,9 +51,7 @@ environment_kwargs = 	{'alive_bonus': 0.5,
 env = Hopper6(environment_kwargs=environment_kwargs)
 
 
-
-
-image = env._physics.render(camera_id = "camera", depth = True)
+image = env.env._physics.render(camera_id = "camera", depth = True)
 
 # print(image.shape)
 # Display the contents of the first channel, which contains object
@@ -82,18 +81,19 @@ for i in range(1000):
 	# actions = model.predict(obs)
 	actions = np.random.rand(2) * 2
 	actions = np.clip(actions, -1, 1)
-	# if i % 2 == 0:
-	# 	actions[0] = 0
-	# 	actions[1] = 0
-	# else:
-	# 	actions[0] = -1
-	# 	actions[1] = 1
-	actions[0] = -1
-	actions[1] = -1
-	print(actions)
-	timestep, reward, discount, obs = env.step(actions)
-	render_store.append(env._physics.render(camera_id = "camera"))
-	print(obs)
+
+	if i %2 ==0:
+		actions[0] = 0
+		actions[1] = -0.4
+	else:
+		actions[1] = 0
+		actions[0] = +0.5
+
+	obs,reward,done,info = env.step(actions)
+	render_store.append(env.env._physics.render(camera_id = "camera"))
+	print(env.env._physics.named.data.xpos[['torso'], 'z'][0]
+		,env.env._physics.named.data.xpos[['torso'], 'x'][0])
+		
 	ax.imshow(render_store[-1])
 	plt.pause(0.001)
 	plt.cla()

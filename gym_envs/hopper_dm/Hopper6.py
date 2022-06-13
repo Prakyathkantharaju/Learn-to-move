@@ -41,7 +41,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	physics = mjcf.Physics.from_mjcf_model(model)
 	environment_kwargs = environment_kwargs or {}
 	task = HopperParkour(physics, random=None, environment_kwargs=environment_kwargs)
-	return HopperEnvWrapper(physics, task=task, time_limit=time_limit, control_timestep=0.1)
+	return HopperEnvWrapper(physics, task=task, time_limit=time_limit, control_timestep=0.05)
 
 
 # TODO: change the location when refactor.
@@ -104,7 +104,7 @@ class HopperEnv(control.Environment):
 
 # this is bad but I have to use subvecprocess but it does not account for the timestep of dm_control env.
 class HopperEnvWrapper(gym.Env):
-	metadata = {'render.modes': ['human']}
+	metadata = {"render.modes": ["human", "rgb_array"], "video.frames_per_second": int(1/0.05)}
 	def __init__(self,  physics:mujoco.Physics, task, time_limit:float=10, control_timestep:NoneType=None, 
 					n_sub_steps:NoneType=None, flat_observation:bool=False):
 		
@@ -140,7 +140,7 @@ class HopperEnvWrapper(gym.Env):
 		return obs
 
 	def render(self, mode='human'):
-		return self.env.render(mode)
+		return self.env._physics.render(camera_id = "camera")
 
 
 	def _convert_output(self, timestep, reward, discount, obs):
@@ -160,6 +160,7 @@ class HopperEnvWrapper(gym.Env):
 
 
 class HopperParkour(base.Task):
+	metadata = {"render.modes": ["human", "rgb_array"], "video.frames_per_second": int(1/0.05)}
 	def __init__(self, physics: mujoco.Physics ,random=None, environment_kwargs=None):
 
 		self._physics = physics
@@ -263,7 +264,7 @@ class HopperParkour(base.Task):
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 		
-		if get_z_distance < 0.5:
+		if get_z_distance < 1.2:
 			return 1
 		else:
 			# no discount

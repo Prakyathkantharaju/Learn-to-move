@@ -113,7 +113,7 @@ def make_env(seed=0):
 	Create a wrapped, monitored SubprocVecEnv for Hopper
 	"""
 	def _init():
-		env.reset()
+		# env.reset()
 
 		env.seed(seed)
 		print(f"env seed: {seed}")
@@ -127,7 +127,7 @@ def make_env_1(seed=0):
 	Create a wrapped, monitored SubprocVecEnv for Hopper
 	"""
 	def _init():
-		env_1.reset()
+		# env_1.reset()
 
 		env_1.seed(seed)
 		print(f"env_1 seed: {seed}")
@@ -141,7 +141,7 @@ def make_env_2(seed=0):
 	Create a wrapped, monitored SubprocVecEnv for Hopper
 	"""
 	def _init():
-		env_2.reset()
+		# env_2.reset()
 
 		env_2.seed(seed)
 		print(f"env_2 seed: {seed}")
@@ -155,7 +155,7 @@ def make_env_3(seed=0):
 	Create a wrapped, monitored SubprocVecEnv for Hopper
 	"""
 	def _init():
-		env_3.reset()
+		# env_3.reset()
 
 		env_3.seed(seed)
 		print(f"env_2 seed: {seed}")
@@ -169,7 +169,7 @@ def make_env_4(seed=0):
 	Create a wrapped, monitored SubprocVecEnv for Hopper
 	"""
 	def _init():
-		env_4.reset()
+		# env_4.reset()
 
 		env_4.seed(seed)
 		print(f"env_2 seed: {seed}")
@@ -187,15 +187,16 @@ if __name__ == '__main__':
 
 	# train_env = SubprocVecEnv(env_list, start_method='fork')
 	train_env = DummyVecEnv(env_list)
-	# train_env = VecVideoRecorder(train_env, video_folder=f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
+	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 1 == 0, video_length = 200)
 
+	train_env.reset()
 
 	model = PPO("MultiInputPolicy", train_env, n_steps=200, 
 				n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
-				tensorboard_log=f".run_logs/logs/{run.id}")
+				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
-	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1, 
+	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1,  save_model_freq=1000,
 									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 

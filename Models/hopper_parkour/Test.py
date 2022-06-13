@@ -40,19 +40,20 @@ config = {
 PATH = 'gym_env/hopper_dm/mujoco_models/hopper_parkour_plain.xml'
 
 
+
 environment_kwargs = 	{'alive_bonus': 0.5,
 						'velocity_cost': 0.0,
 						'time_limit': 100,
 						'position_reward':True,
 						'observation_mode':'render',
-						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_gaps.xml'}
+						'path':'gym_envs/hopper_dm/mujoco_models/hopper_parkour_plain.xml'}
 
 env = Hopper6(environment_kwargs=environment_kwargs)
 
 
 
 
-image = env._physics.render(camera_id = "camera", depth = True)
+image = env.env._physics.render(camera_id = "camera", depth = True)
 
 # print(image.shape)
 # Display the contents of the first channel, which contains object
@@ -70,9 +71,9 @@ plt.show()
 model = PPO("MultiInputPolicy", env, n_steps=int(environment_kwargs['time_limit']/0.01), 
 			n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1)
 
-model.load("Models_parkour_large_1")
+model.load("run_logs/models/model_safe.pkl")
 
-_, _, _, obs = env.reset()
+obs = env.reset()
 print(obs)
 
 
@@ -80,8 +81,9 @@ render_store = []
 fig, ax = plt.subplots(1, 1)
 for _ in range(1000):
 	actions = model.predict(obs)
-	timestep, reward, discount, obs = env.step(actions)
-	render_store.append(env._physics.render(camera_id = "camera"))
+	print(actions[0])
+	obs, reward, done, info = env.step(actions[0])
+	render_store.append(env.env._physics.render(camera_id = "camera"))
 	print(reward)
 	print(render_store[-1].shape)
 	ax.imshow(render_store[-1])
