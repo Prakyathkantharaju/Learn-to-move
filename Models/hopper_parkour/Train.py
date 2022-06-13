@@ -118,7 +118,7 @@ def make_env(seed=0):
 		env.seed(seed)
 		print(f"env seed: {seed}")
 		return env
-	
+
 	set_random_seed(seed)
 	return _init
 
@@ -132,7 +132,7 @@ def make_env_1(seed=0):
 		env_1.seed(seed)
 		print(f"env_1 seed: {seed}")
 		return env_1
-	
+
 	set_random_seed(seed)
 	return _init
 
@@ -146,7 +146,7 @@ def make_env_2(seed=0):
 		env_2.seed(seed)
 		print(f"env_2 seed: {seed}")
 		return env_2
-	
+
 	set_random_seed(seed)
 	return _init
 
@@ -158,9 +158,9 @@ def make_env_3(seed=0):
 		# env_3.reset()
 
 		env_3.seed(seed)
-		print(f"env_2 seed: {seed}")
+		print(f"env_3 seed: {seed}")
 		return env_3
-	
+
 	set_random_seed(seed)
 	return _init
 
@@ -172,31 +172,31 @@ def make_env_4(seed=0):
 		# env_4.reset()
 
 		env_4.seed(seed)
-		print(f"env_2 seed: {seed}")
+		print(f"env_4 seed: {seed}")
 		return env_4
-	
+
 	set_random_seed(seed)
 	return _init
 
 if __name__ == '__main__':
-	env_list = [make_env(0), make_env_1(1), make_env_2(2), 
+	env_list = [make_env(0), make_env_1(1), make_env_2(2),
 	make_env_3(6), make_env_4(2)]
 
 	check_env(env)
-	env_list = [make_env(0), make_env_1(1)]
+	# env_list = [make_env(0), make_env_1(1), ]
 
-	# train_env = SubprocVecEnv(env_list, start_method='fork')
+	#train_env = SubprocVecEnv(env_list, start_method='fork')
 	train_env = DummyVecEnv(env_list)
-	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 1 == 0, video_length = 200)
+	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100 == 0, video_length = 200)
 
 	train_env.reset()
 
-	model = PPO("MultiInputPolicy", train_env, n_steps=200, 
+	model = PPO("MultiInputPolicy", train_env, n_steps=200,
 				n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
-	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1,  save_model_freq=1000,
+	model.learn(total_timesteps=50000, log_interval=1, callback=WandbCallback(gradient_save_freq=1,  model_save_freq=1000,
 									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 
