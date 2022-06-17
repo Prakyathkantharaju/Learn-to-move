@@ -20,6 +20,8 @@
 			<joint name="x" type="slide" pos="0 0 0" axis="1 0 0" />
 			<joint name="z" type="slide" pos="0 0 0" axis="0 0 1" />
 			<geom type="sphere" size="0.1" rgba=".9 .9 .9 1" mass="1"/>
+			<site name="accel_site" pos="0 0 0" size="0.1" rgba=".9 .9 .9 1" type="cylinder"/>
+			<site name="range_site" pos="0 0 0" size="1" euler="70 170 0" rgba=".9 .9 .9 1" type="cylinder"/>
 			<body name="leg" pos="0 0 -0.5" euler="0 0 0">
 				<joint name="hip" type="hinge" pos="0 0 0.5" axis="0 -1 0" />
 				<geom type="cylinder" size=".05 .5" rgba="0 .9 0 1" mass="1"/>
@@ -38,6 +40,13 @@
 		<position name="pservo-knee" joint="knee" kp="0"/>
 		<velocity name="vservo-knee" joint="knee" kv="0"/>
 	</actuator>
+
+
+	<sensor> -->
+		<!-- <accelerometer name="accel" site="accel_site"/> -->
+		<!-- <gyro name="gyro" site="accel_site"/> -->
+		<rangefinder name="rangefinder" noise="0.1" site="range_site"/>
+	</sensor>
 
 
 </mujoco>
