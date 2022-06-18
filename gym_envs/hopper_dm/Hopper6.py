@@ -136,6 +136,11 @@ class HopperEnvWrapper(gym.Env):
 	def step(self, action):
 		timestep, reward, discount, obs =  self.env.step(action)
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
+
+		# since the action is not taken care in the deepmind env, we need to do it here.
+		reward -= np.sum(np.square(action))		
+
+
 		# if done:
 			# print(f"done: {self.env.task.model_path}, reward: {reward}")
 		return obs, reward, done, info
