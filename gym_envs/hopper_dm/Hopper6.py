@@ -219,8 +219,10 @@ class HopperParkour(base.Task):
 		if self._alive_bonus > 0:
 			reward += self._alive_bonus
 		if self._velocity_cost > 0:
-			reward += physics.named.data.qvel[['hip']] * self._velocity_cost
+			reward += physics.named.data.qvel[['hip']][0] * self._velocity_cost
 		return reward
+
+
 
 	def _position_reward(self, physics: mujoco.Physics):
 		"""
