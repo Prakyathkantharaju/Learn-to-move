@@ -47,7 +47,7 @@ PATH = 'gym_env/hopper_dm/mujoco_models/hopper_parkour.xml'
 
 
 environment_kwargs = 	{'alive_bonus': 0.05,
-						'velocity_cost': 0.01,
+						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
 						'observation_mode':'range',
@@ -56,7 +56,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 env = Hopper6(environment_kwargs=environment_kwargs)
 
 environment_kwargs = 	{'alive_bonus': 0.05,
-						'velocity_cost': 0.01,
+						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
 						'observation_mode':'range',
@@ -66,7 +66,7 @@ env_1 = Hopper6(environment_kwargs=environment_kwargs)
 
 
 environment_kwargs = 	{'alive_bonus': 0.05,
-						'velocity_cost': 0.01,
+						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
 						'observation_mode':'range',
@@ -76,7 +76,7 @@ env_2 = Hopper6(environment_kwargs=environment_kwargs)
 
 
 environment_kwargs = 	{'alive_bonus': 0.05,
-						'velocity_cost': 0.01,
+						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
 						'observation_mode':'range',
@@ -85,7 +85,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 env_3 = Hopper6(environment_kwargs=environment_kwargs)
 
 environment_kwargs = 	{'alive_bonus': 0.05,
-						'velocity_cost': 0.01,
+						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
 						'observation_mode':'range',

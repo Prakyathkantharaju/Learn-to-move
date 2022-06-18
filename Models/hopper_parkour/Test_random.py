@@ -42,7 +42,7 @@ PATH = 'gym_env/hopper_dm/mujoco_models/hopper_parkour_plain.xml'
 
 
 environment_kwargs = 	{'alive_bonus': 0.5,
-						'velocity_cost': 0.0,
+						'velocity_cost': 0.01,
 						'time_limit': 100,
 						'position_reward':True,
 						'observation_mode':'range',
@@ -86,10 +86,10 @@ for i in range(1000):
 	actions = np.clip(actions, -1, 1)
 
 	if i %2 ==0:
-		actions[0] = 0
+		actions[0] = 0.5
 		actions[1] = -0.4
 	else:
-		actions[1] = 0
+		actions[1] = 0.4
 		actions[0] = +0.5
 
 	obs,reward,done,info = env.step(actions)

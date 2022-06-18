@@ -138,9 +138,9 @@ class HopperEnvWrapper(gym.Env):
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
 
 		# since the action is not taken care in the deepmind env, we need to do it here.
-		print("action: ", action, reward)
+		# print("action: ", action, reward)
 		if reward is not None:
-			print("@" * 100)
+			# print("@" * 100)
 			reward -= np.sum(np.square(action))		
 
 
@@ -222,7 +222,7 @@ class HopperParkour(base.Task):
 		if self._alive_bonus > 0:
 			reward += self._alive_bonus
 		if self._velocity_cost > 0:
-			reward -= self._velocity_cost * physics.named.data.qpos[['torso'], 'z'][0]
+			reward -= self._velocity_cost * physics.named.data.xpos[['torso'], 'z'][0]
 		return reward
 
 	def _position_reward(self, physics: mujoco.Physics):
