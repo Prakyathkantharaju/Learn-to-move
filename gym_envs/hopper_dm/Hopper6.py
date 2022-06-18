@@ -138,6 +138,8 @@ class HopperEnvWrapper(gym.Env):
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
 
 		# since the action is not taken care in the deepmind env, we need to do it here.
+		if reward is not None:
+			reward -= np.sqrt(np.sum(np.square(action)))
 		# print("action: ", action, reward)
 
 
