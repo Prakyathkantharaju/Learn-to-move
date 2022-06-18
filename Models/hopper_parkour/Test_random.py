@@ -54,7 +54,7 @@ env = Hopper6(environment_kwargs=environment_kwargs)
 image = env.env._physics.render(camera_id = "camera", depth = True)
 
 
-print(env.env._physics.named.data.sensordata.__array__())
+print(dir(env.env._physics.named.data))
 
 # print(image.shape)
 # Display the contents of the first channel, which contains object
@@ -93,6 +93,7 @@ for i in range(1000):
 		actions[0] = +0.5
 
 	obs,reward,done,info = env.step(actions)
+
 	render_store.append(env.env._physics.render(camera_id = "camera"))
 	print(obs['range'])
 		

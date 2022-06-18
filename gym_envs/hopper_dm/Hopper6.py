@@ -33,7 +33,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	# get hip joint
 	# Need to add this in the environment_kwargs
 	hip_joint = model.find('joint', 'hip')
-	hip_joint = add_position_actuator(hip_joint, [-20, 20], [-1, 1])
+	hip_joint = add_position_actuator(hip_joint, [-10, 10], [-1, 1])
 	knee_joint = model.find('joint', 'knee')
 	knee_joint = add_position_actuator(knee_joint, [-0.1, 0.1], [-1, 1])
 
@@ -48,7 +48,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 # TODO: change the location when refactor.
 # copied from https://github.com/deepmind/dm_control/blob/main/dm_control/locomotion/walkers/scaled_actuators.py
 def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple =(-1, 1),
-                          kp:int=100.0, **kwargs):
+                          kp:int=10.0, **kwargs):
   """Adds a scaled position actuator that is bound to the specified element.
   This is equivalent to MuJoCo's built-in `<position>` actuator where an affine
   transformation is pre-applied to the control signal, such that the minimum
@@ -138,7 +138,10 @@ class HopperEnvWrapper(gym.Env):
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
 
 		# since the action is not taken care in the deepmind env, we need to do it here.
-		reward -= np.sum(np.square(action))		
+		print("action: ", action, reward)
+		if reward is not None:
+			print("@" * 100)
+			reward -= np.sum(np.square(action))		
 
 
 		# if done:
@@ -219,7 +222,7 @@ class HopperParkour(base.Task):
 		if self._alive_bonus > 0:
 			reward += self._alive_bonus
 		if self._velocity_cost > 0:
-			reward -= self._velocity_cost * physics.named.data.qvel[['torso'], 'z'][0]
+			reward -= self._velocity_cost * physics.named.data.qpos[['torso'], 'z'][0]
 		return reward
 
 	def _position_reward(self, physics: mujoco.Physics):
