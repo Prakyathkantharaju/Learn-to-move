@@ -131,7 +131,7 @@ class HopperEnvWrapper(gym.Env):
 			self.observation_space = Dict({"range":shape_data})
 
 		# set action space
-		self.action_space = Box(low = -1, high=1, shape = (2,))
+		self.action_space = Box(low = -0.2, high=0.2, shape = (2,))
 
 	def step(self, action):
 		timestep, reward, discount, obs =  self.env.step(action)
