@@ -27,6 +27,7 @@ def get_model_and_assets_xml(path:str):
 
 def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType|DictType=None):
 	xml_string = get_model_and_assets_xml(environment_kwargs['path'])
+	print(f"path: {environment_kwargs['path']}")
 	model = mjcf.from_path(environment_kwargs['path'])
 
 	# get hip joint
@@ -47,7 +48,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 # TODO: change the location when refactor.
 # copied from https://github.com/deepmind/dm_control/blob/main/dm_control/locomotion/walkers/scaled_actuators.py
 def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple =(-1, 1),
-                          kp:int=1.0, **kwargs):
+                          kp:int=10.0, **kwargs):
   """Adds a scaled position actuator that is bound to the specified element.
   This is equivalent to MuJoCo's built-in `<position>` actuator where an affine
   transformation is pre-applied to the control signal, such that the minimum
@@ -124,6 +125,10 @@ class HopperEnvWrapper(gym.Env):
 			shape_ = obs['state'].shape[0]
 			shape_data = Box( low = -np.inf, high = np.inf, shape = (shape_,))
 			self.observation_space = Dict({"state":shape_data})
+		elif self.env.task._observation_mode == 'range':
+			shape_ = obs['range'].shape[0]
+			shape_data = Box( low = -np.inf, high = np.inf, shape = (shape_,))
+			self.observation_space = Dict({"range":shape_data})
 
 		# set action space
 		self.action_space = Box(low = -1, high=1, shape = (2,))
@@ -232,8 +237,20 @@ class HopperParkour(base.Task):
 		elif self._observation_mode == 'state':
 			obs['state'] = self._get_state(physics)
 			return obs
+		elif self._observation_mode == 'range':
+			obs['range'] = self._get_range(physics)
+			return obs
 		else:
 			raise NotImplementedError
+
+	def _get_range(self, physics):
+		"""
+		Returns an observation of the state.
+		"""
+		obs = physics.named.data.xpos[['torso']].reshape(-1)
+
+		obs = np.concatenate((obs,physics.data.sensordata.__array__()))
+		return obs.flatten().astype(np.float32)
 
 	def _get_render(self, physics):
 		"""
@@ -241,7 +258,6 @@ class HopperParkour(base.Task):
 		"""
 		image = physics.render(camera_id = "camera", depth = True)
 
-		# print(image.shape)
 		# Display the contents of the first channel, which contains object
 		# IDs. The second channel, seg[:, :, 1], contains object types.
 		geom_ids = image
