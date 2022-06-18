@@ -33,9 +33,9 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	# get hip joint
 	# Need to add this in the environment_kwargs
 	hip_joint = model.find('joint', 'hip')
-	hip_joint = add_position_actuator(hip_joint, [-30, 30], [-1, 1])
+	hip_joint = add_position_actuator(hip_joint, [-15, 15], [-1, 1])
 	knee_joint = model.find('joint', 'knee')
-	knee_joint = add_position_actuator(knee_joint, [-0.05, 0.05], [-1, 1])
+	knee_joint = add_position_actuator(knee_joint, [-0.001, 0.001], [-1, 1], kp =10)
 
 
 	# physics = mujoco.Physics.from_xml_string(xml_string)
@@ -219,7 +219,7 @@ class HopperParkour(base.Task):
 		if self._alive_bonus > 0:
 			reward += self._alive_bonus
 		if self._velocity_cost > 0:
-			reward -= 0
+			reward += physics.named.data.qvel[['hip']] * self._velocity_cost
 		return reward
 
 	def _position_reward(self, physics: mujoco.Physics):
@@ -255,7 +255,7 @@ class HopperParkour(base.Task):
 		"""
 		# obs = physics.named.data.xpos[['torso']].reshape(-1)
 
-		obs = np.concatenate((obs,physics.data.sensordata.__array__()))
+		obs = physics.data.sensordata.__array__()
 		return obs.flatten().astype(np.float32)
 
 	def _get_render(self, physics):
@@ -286,7 +286,9 @@ class HopperParkour(base.Task):
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
-		if get_z_distance < 1.2 or get_z_distance > 5 or get_z_leg > 3:
+		if get_z_distance < 1.2 or get_z_distance > 5 or get_z_leg > 4:
+			return 1
+		elif physics.time() > self._time_limit:
 			return 1
 		else:
 			# no discount
