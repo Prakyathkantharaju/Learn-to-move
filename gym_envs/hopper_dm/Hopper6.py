@@ -139,9 +139,6 @@ class HopperEnvWrapper(gym.Env):
 
 		# since the action is not taken care in the deepmind env, we need to do it here.
 		# print("action: ", action, reward)
-		if reward is not None:
-			# print("@" * 100)
-			reward -= np.sum(np.square(action))		
 
 
 		# if done:
