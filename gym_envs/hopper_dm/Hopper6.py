@@ -283,7 +283,7 @@ class HopperParkour(base.Task):
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 
-		if get_z_distance < 1.2:
+		if get_z_distance < 1.2 or get_z_distance > 10:
 			return 1
 		else:
 			# no discount
