@@ -33,9 +33,9 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	# get hip joint
 	# Need to add this in the environment_kwargs
 	hip_joint = model.find('joint', 'hip')
-	hip_joint = add_position_actuator(hip_joint, [-3.14, 3.14], [-1, 1])
+	hip_joint = add_position_actuator(hip_joint, [-50, 50], [-1, 1])
 	knee_joint = model.find('joint', 'knee')
-	knee_joint = add_position_actuator(knee_joint, [-1.5, 1.5], [-1, 1])
+	knee_joint = add_position_actuator(knee_joint, [-0.5, 0.5], [-1, 1])
 
 
 	# physics = mujoco.Physics.from_xml_string(xml_string)
@@ -48,7 +48,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 # TODO: change the location when refactor.
 # copied from https://github.com/deepmind/dm_control/blob/main/dm_control/locomotion/walkers/scaled_actuators.py
 def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple =(-1, 1),
-                          kp:int=10.0, **kwargs):
+                          kp:int=100.0, **kwargs):
   """Adds a scaled position actuator that is bound to the specified element.
   This is equivalent to MuJoCo's built-in `<position>` actuator where an affine
   transformation is pre-applied to the control signal, such that the minimum
