@@ -35,7 +35,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	hip_joint = model.find('joint', 'hip')
 	hip_joint = add_position_actuator(hip_joint, [-15, 15], [-1, 1])
 	knee_joint = model.find('joint', 'knee')
-	knee_joint = add_position_actuator(knee_joint, [-0.001, 0.001], [-1, 1], kp =10)
+	knee_joint = add_position_actuator(knee_joint, [-0.001, 0.001], [-1, 1], kp =1)
 
 
 	# physics = mujoco.Physics.from_xml_string(xml_string)
@@ -48,7 +48,7 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 # TODO: change the location when refactor.
 # copied from https://github.com/deepmind/dm_control/blob/main/dm_control/locomotion/walkers/scaled_actuators.py
 def add_position_actuator(target: mjcf.Element, qposrange:list, ctrlrange:tuple =(-1, 1),
-                          kp:int=100.0, **kwargs):
+                          kp:int=10.0, **kwargs):
   """Adds a scaled position actuator that is bound to the specified element.
   This is equivalent to MuJoCo's built-in `<position>` actuator where an affine
   transformation is pre-applied to the control signal, such that the minimum
@@ -131,7 +131,7 @@ class HopperEnvWrapper(gym.Env):
 			self.observation_space = Dict({"range":shape_data})
 
 		# set action space
-		self.action_space = Box(low = -0.2, high=0.2, shape = (2,))
+		self.action_space = Box(low = np.array([-0.2,-0.01]), high= np.array([0.2, 0.01]), shape = (2,))
 
 	def step(self, action):
 		timestep, reward, discount, obs =  self.env.step(action)
