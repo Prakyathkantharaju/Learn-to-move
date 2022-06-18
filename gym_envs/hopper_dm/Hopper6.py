@@ -253,7 +253,7 @@ class HopperParkour(base.Task):
 		"""
 		Returns an observation of the state.
 		"""
-		obs = physics.named.data.xpos[['torso']].reshape(-1)
+		# obs = physics.named.data.xpos[['torso']].reshape(-1)
 
 		obs = np.concatenate((obs,physics.data.sensordata.__array__()))
 		return obs.flatten().astype(np.float32)
@@ -286,7 +286,7 @@ class HopperParkour(base.Task):
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
-		if get_z_distance < 1.2 or get_z_distance > 5 or get_z_leg > get_z_distance:
+		if get_z_distance < 1.2 or get_z_distance > 5 or get_z_leg > 3:
 			return 1
 		else:
 			# no discount

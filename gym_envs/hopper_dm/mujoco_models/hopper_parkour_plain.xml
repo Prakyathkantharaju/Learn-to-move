@@ -48,6 +48,8 @@
 				<site name="range_site_8" pos="0 0 0.1" size="0.1 0.1 0.1" euler="0 145 0" type="cylinder"/>
 				<site name="range_site_9" pos="0 0 0.1" size="0.1 0.1 0.1" euler="0 150 0" type="cylinder"/>
 				<site name="range_site_10" pos="0 0 0.1" size="0.1 0.1 0.1" euler="0 155 0" type="cylinder"/>
+				<site name="accel_site" pos="0 0 0" size="0.1 0.1 0.1" euler="0 0 0" type="cylinder"/>
+				<site name="gyro_site" pos="0 0 0" size="0.1 0.1 0.1" euler="0 0 0" type="cylinder"/>
 				<joint name="x" type="slide" pos="0 0 0" axis="1 0 0" />
 				<joint name="z" type="slide" pos="0 0 0" axis="0 0 1" />
 				<geom type="sphere" size="0.1" rgba=".9 .9 .9 1" mass="1"/>
@@ -74,6 +76,8 @@
 		<rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" />
 		<rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" />
 		<rangefinder name="range_sensor_10" site="range_site_10" cutoff="10" />
+		<accelerometer name="accel_sensor" site="accel_site" />
+		<gyro name="gyro_sensor" site="gyro_site" />
 	</sensor>
 	<!-- <actuator>
 		<position name="pservo-hip" joint="hip" kp="1" ctrllimited="false" ctrlrange ="0 3.14"/>
