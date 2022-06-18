@@ -33,9 +33,9 @@ def Hopper6(time_limit:int=10, random:NoneType=None, environment_kwargs:NoneType
 	# get hip joint
 	# Need to add this in the environment_kwargs
 	hip_joint = model.find('joint', 'hip')
-	hip_joint = add_position_actuator(hip_joint, [-50, 50], [-1, 1])
+	hip_joint = add_position_actuator(hip_joint, [-20, 20], [-1, 1])
 	knee_joint = model.find('joint', 'knee')
-	knee_joint = add_position_actuator(knee_joint, [-0.5, 0.5], [-1, 1])
+	knee_joint = add_position_actuator(knee_joint, [-0.1, 0.1], [-1, 1])
 
 
 	# physics = mujoco.Physics.from_xml_string(xml_string)
@@ -283,7 +283,7 @@ class HopperParkour(base.Task):
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 
-		if get_z_distance < 1.2 or get_z_distance > 10:
+		if get_z_distance < 1.2 or get_z_distance > 5:
 			return 1
 		else:
 			# no discount
