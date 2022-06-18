@@ -136,7 +136,8 @@ class HopperEnvWrapper(gym.Env):
 	def step(self, action):
 		timestep, reward, discount, obs =  self.env.step(action)
 		obs, reward, done, info =  self._convert_output(timestep, reward, discount, obs)
-		# print(obs['image'].shape)
+		if done:
+			print(f"done: {self.env.task.model_path}, reward: {reward}")
 		return obs, reward, done, info
 
 	def reset(self):
@@ -198,6 +199,8 @@ class HopperParkour(base.Task):
 			self._observation_scale  = 0.5
 		else:
 			self._observation_scale = 1
+
+		self.model_path = environment_kwargs.get('path')
 
 		super().__init__(random)
 
@@ -281,7 +284,6 @@ class HopperParkour(base.Task):
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 
 		if get_z_distance < 1.2:
-			print(physics.named.data.xpos[['torso'], 'x'][0])
 			return 1
 		else:
 			# no discount
