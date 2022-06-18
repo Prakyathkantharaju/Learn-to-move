@@ -187,11 +187,11 @@ if __name__ == '__main__':
 
 	#train_env = SubprocVecEnv(env_list, start_method='fork')
 	train_env = DummyVecEnv(env_list)
-	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 1000 == 0, video_length = 100)
+	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 10000 == 0, video_length = 200)
 
 	train_env.reset()
 
-	model = PPO("MultiInputPolicy", train_env, n_steps=100,
+	model = PPO("MultiInputPolicy", train_env, n_steps=200,
 				n_epochs=10, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
