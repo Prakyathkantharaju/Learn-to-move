@@ -46,7 +46,7 @@ run = wandb.init(
 PATH = 'gym_env/hopper_dm/mujoco_models/hopper_parkour.xml'
 
 
-environment_kwargs = 	{'alive_bonus': 0.05,
+environment_kwargs = 	{'alive_bonus': 0.0005,
 						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
@@ -55,7 +55,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 
 env = Hopper6(environment_kwargs=environment_kwargs)
 
-environment_kwargs = 	{'alive_bonus': 0.05,
+environment_kwargs = 	{'alive_bonus': 0.0005,
 						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
@@ -65,7 +65,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 env_1 = Hopper6(environment_kwargs=environment_kwargs)
 
 
-environment_kwargs = 	{'alive_bonus': 0.05,
+environment_kwargs = 	{'alive_bonus': 0.0005,
 						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
@@ -75,7 +75,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 env_2 = Hopper6(environment_kwargs=environment_kwargs)
 
 
-environment_kwargs = 	{'alive_bonus': 0.05,
+environment_kwargs = 	{'alive_bonus': 0.0005,
 						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
@@ -84,7 +84,7 @@ environment_kwargs = 	{'alive_bonus': 0.05,
 
 env_3 = Hopper6(environment_kwargs=environment_kwargs)
 
-environment_kwargs = 	{'alive_bonus': 0.05,
+environment_kwargs = 	{'alive_bonus': 0.0005,
 						'velocity_cost': 0.001,
 						'time_limit': 10,
 						'position_reward':True,
