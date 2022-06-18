@@ -214,7 +214,7 @@ class HopperParkour(base.Task):
 		if self._alive_bonus > 0:
 			reward += self._alive_bonus
 		if self._velocity_cost > 0:
-			reward += self._velocity_cost * physics.data.qvel[['torso'] , 'x']
+			reward -= self._velocity_cost * physics.data.qvel[['torso'] , 'x']
 		return reward
 
 	def _position_reward(self, physics: mujoco.Physics):
@@ -223,9 +223,7 @@ class HopperParkour(base.Task):
 		"""
 		reward = 0
 		reward += self._physics.named.data.xpos[['torso'] , 'x'][0]
-		# reward += self._physics.named.data.xpos[['torso'], 'z'][0]
-		# if self._physics.named.data.xpos[['torso'] , 'x'][0] < 1:
-		# 	reward = 1 - self._physics.named.data.xpos[['torso'] , 'x'][0]
+
 		return reward
 
 
@@ -282,8 +280,8 @@ class HopperParkour(base.Task):
 
 	def get_termination(self, physics) -> bool|NoneType:
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
-
-		if get_z_distance < 1.2 or get_z_distance > 5:
+		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
+		if get_z_distance < 1.2 or get_z_distance > 5 or get_z_leg > get_z_distance:
 			return 1
 		else:
 			# no discount
