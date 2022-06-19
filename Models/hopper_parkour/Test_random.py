@@ -95,10 +95,10 @@ for i in range(1000):
 	obs,reward,done,info = env.step(actions)
 
 	render_store.append(env.env._physics.render(camera_id = "camera"))
+	print(reward)
 		
-	print(env.env._physics.named.data.qvel[['hip']])
 	ax.imshow(render_store[-1])
-	plt.pause(0.001)
+	plt.pause(0.00001)
 	plt.cla()
 
 

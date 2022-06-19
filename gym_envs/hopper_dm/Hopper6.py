@@ -219,10 +219,28 @@ class HopperParkour(base.Task):
 		if self._position_reward_cost:
 			reward += self._position_reward(physics)
 		if self._alive_bonus > 0:
-			reward += self._alive_bonus
+			reward += self._alive(self._physics) * self._alive_bonus
 		if self._velocity_cost > 0:
-			reward += physics.named.data.qvel[['hip']][0] * self._velocity_cost
+			reward += physics.named.data.qvel[['x']][0] * self._velocity_cost
 		return reward
+
+
+	def _alive(self, physics: mujoco.Physics) -> float:
+		
+		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
+		get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
+		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
+		if get_z_distance < 3.5:
+			if get_z_distance > 0.5:
+				reward = (get_z_distance - 0.5) / (3) * 2 - 1 # mapping between -1 to 1
+			else:
+				reward = -1.1 # should be -1 I want to try this first.
+		else:
+			reward = -1.1 # should be -1 I want to try this first.
+		return reward
+
+				
+			
 
 
 
@@ -231,7 +249,7 @@ class HopperParkour(base.Task):
 		Reward for traveling forward.
 		"""
 		reward = 0
-		reward += self._physics.named.data.xpos[['torso'] , 'x'][0]
+		# reward += self._physics.named.data.xpos[['torso'] , 'x'][0]
 
 		return reward
 
@@ -288,12 +306,14 @@ class HopperParkour(base.Task):
 		return physics.named.data.qpos[['torso']]
 
 	def get_termination(self, physics) -> bool|NoneType:
-		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
-		get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
-		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
-		if get_z_distance < 1.2 or get_z_distance > 4.5 or get_z_leg > 3.5 or get_x_distance < -0.5:
-			return 1
-		elif physics.time() > self._time_limit:
+		# get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
+		# get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
+		# get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
+		# if get_z_distance < 1.2 or get_z_distance > 4.5 or get_z_leg > 3.5 or get_x_distance < -0.5:
+		# 	return 1
+
+		# changing this based on the paper: https://arxiv.org/pdf/1707.02286.pdf 
+		if physics.time() > self._time_limit:
 			return 1
 		else:
 			# no discount
