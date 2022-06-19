@@ -231,8 +231,8 @@ class HopperParkour(base.Task):
 		get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
 		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
 		if get_z_distance < 3.5:
-			if get_z_distance > 0.5:
-				reward = (get_z_distance - 0.5) / (3) * 2 - 1 # mapping between -1 to 1
+			if get_z_distance > 0.9:
+				reward = (get_z_distance - 0.7) / (3) * 2 - 1 # mapping between -1 to 1
 			else:
 				reward = -1.1 # should be -1 I want to try this first.
 		else:
@@ -306,11 +306,11 @@ class HopperParkour(base.Task):
 		return physics.named.data.qpos[['torso']]
 
 	def get_termination(self, physics) -> bool|NoneType:
-		# get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
-		# get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
-		# get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
-		# if get_z_distance < 1.2 or get_z_distance > 4.5 or get_z_leg > 3.5 or get_x_distance < -0.5:
-		# 	return 1
+		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
+		get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
+		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
+		if get_z_distance < 0.9 or get_z_distance > 4.5 or get_z_leg > 3.5 or get_x_distance < -0.5:
+			return 1
 
 		# changing this based on the paper: https://arxiv.org/pdf/1707.02286.pdf 
 		if physics.time() > self._time_limit:
