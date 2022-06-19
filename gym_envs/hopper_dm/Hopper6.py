@@ -309,7 +309,7 @@ class HopperParkour(base.Task):
 		get_z_distance = physics.named.data.xpos[['torso'], 'z'][0]
 		get_x_distance = physics.named.data.xpos[['torso'], 'x'][0]
 		get_z_leg = physics.named.data.xpos[['leg'], 'z'][0]
-		if get_z_distance < 0.9 or get_z_distance > 4.5 or get_z_leg > 3.5 or get_x_distance < -0.5:
+		if get_z_distance < 0.7 or get_z_distance > 4.5:
 			return 1
 
 		# changing this based on the paper: https://arxiv.org/pdf/1707.02286.pdf 
