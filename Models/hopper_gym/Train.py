@@ -8,7 +8,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecVide
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
 from stable_baselines3.common.utils import set_random_seed
 #import sys and set the path
-import sys
+import sys, os
 import numpy as np
 
 
@@ -22,7 +22,7 @@ from wandb.integration.sb3 import WandbCallback
 
 
 
-ys.path.append('./gym_envs/hopper_openai')
+sys.path.append('./gym_envs/hopper_openai')
 sys.path.append('./')
 
 path_ = os.getcwd()
