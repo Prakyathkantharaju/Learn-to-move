@@ -55,7 +55,15 @@ Important information regarding rendering the model.
 
 
 
+## Notes on the dm control parkour.
 
+The PPO is not working on the dm control parkour env.
+As shown int he video above.
+
+Possible reasons:
+- The Env is not able to stand up.
+- The Env is too hard for the current hopper. Need more actions.
+So I am moving on to the hopper openai env. 
  
  
 If you are trying to render the image, please use the following command.
