@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
 	train_env.reset()
 
-	model = TD3("MlpPolicy", train_env,  normalize_advantage = True, verbose=1,
+	model = TD3("MlpPolicy", train_env, verbose=1,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
