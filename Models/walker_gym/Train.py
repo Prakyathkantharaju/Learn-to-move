@@ -1,6 +1,6 @@
 import gym
 from gym.envs.registration import register
-from stable_baselines3 import PPO, A2C, DDPG
+from stable_baselines3 import PPO, A2C, DDPG, TD3
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common import env_checker
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecVideoRecorder
@@ -22,22 +22,22 @@ from wandb.integration.sb3 import WandbCallback
 
 
 
-sys.path.append('./gym_envs/hopper_openai')
+sys.path.append('./gym_envs/walker_openai')
 sys.path.append('./')
 
 path_ = os.getcwd()
 
-rel_path = 'gym_envs/hopper_openai/mujoco_models/hopper_obsticle.xml'
+rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d.xml'
 path = path_ + '/' + rel_path
 # load environment
-from hopper_v4 import HopperEnv
+from walker2d import Walker2dEnv
 
-env = HopperEnv(xml_file = path)
+env = Walker2dEnv(xml_file = path)
 
 # wandb config
 config = {
 	"policy_type": "MlpPolicy",
-	"total_timesteps": 100,
+	"total_timesteps": 1000,
 	"env_name": "Hopper-v4",
 }
 
@@ -77,12 +77,11 @@ if __name__ == '__main__':
 
 	#train_env = SubprocVecEnv(env_list, start_method='fork')
 	train_env = DummyVecEnv(env_list)
-	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 10000 == 0, video_length = 200)
+	train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100000 == 0, video_length = 2000)
 
 	train_env.reset()
 
-	model = PPO("MlpPolicy", train_env, n_steps=200,
-				n_epochs=100, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
+	model = TD3("MlpPolicy", train_env, n_epochs=100, normalize_advantage = True, verbose=1,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
@@ -90,5 +89,5 @@ if __name__ == '__main__':
 									model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 
-	model.save(f"./run_logs/models/model_safe_openai.pkl")
+	model.save(f"./.run_logs/full_save_model/walker/walker_plain.pkl")
 	run.finish()
