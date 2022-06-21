@@ -1,6 +1,6 @@
 import gym
 from gym.envs.registration import register
-from stable_baselines3 import PPO, A2C, DDPG
+from stable_baselines3 import PPO, A2C, DDPG, TD3
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common import env_checker
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecVideoRecorder

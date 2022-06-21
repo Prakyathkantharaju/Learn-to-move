@@ -1,6 +1,6 @@
 import gym
 from gym.envs.registration import register
-from stable_baselines3 import PPO, A2C, DDPG
+from stable_baselines3 import PPO, A2C, DDPG, TD3
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common import env_checker
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecVideoRecorder
@@ -81,8 +81,11 @@ if __name__ == '__main__':
 
 	train_env.reset()
 
-	model = PPO("MlpPolicy", train_env, n_steps=200,
-				n_epochs=100, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
+	#model = PPO("MlpPolicy", train_env, n_steps=200,
+				#n_epochs=100, normalize_advantage = True,  target_kl = 0.5, clip_range=0.4, vf_coef = 0.6, verbose=1,
+				#tensorboard_log=f"./run_logs/logs/{run.id}")
+
+	model = TD3("MlpPolicy", train_env, verbose=1,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
