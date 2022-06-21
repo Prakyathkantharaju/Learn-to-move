@@ -94,7 +94,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         if self._exclude_current_positions_from_observation:
             position = position[1:]
 
-        observation = np.concatenate((position, velocity, rangefinder)).ravel()
+        observation = np.concatenate((position, velocity)).ravel()
         return observation
 
     def step(self, action):
