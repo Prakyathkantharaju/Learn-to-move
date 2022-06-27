@@ -11,7 +11,8 @@ from stable_baselines3.common.utils import set_random_seed
 import sys, os
 import numpy as np
 
-
+from mujoco_py import GlfwContext
+GlfwContext(offscreen=True)
 from stable_baselines3.common.env_checker import check_env
 
 # # load wandb
