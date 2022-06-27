@@ -60,7 +60,7 @@ def make_env(seed=0):
 		# env.reset()
 
 		env.seed(seed)
-        env.render()
+		env.render()
 		print(f"env seed: {seed}")
 		return env
 
