@@ -17,8 +17,8 @@ from stable_baselines3.common.env_checker import check_env
 import wandb
 from wandb.integration.sb3 import WandbCallback
 
-from mujoco_py import GlfwContext
-GlfwContext(offscreen=True)
+# from mujoco_py import GlfwContext
+# GlfwContext(offscreen=True)
 
 
 
