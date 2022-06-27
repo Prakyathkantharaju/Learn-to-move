@@ -73,14 +73,14 @@
     </asset>
   <sensor>
     <rangefinder name="range_sensor_1" site="range_site_1" cutoff="10" />
-		<rangefinder name="range_sensor_2" site="range_site_2" cutoff="10" />
+		<!-- <rangefinder name="range_sensor_2" site="range_site_2" cutoff="10" /> -->
 		<rangefinder name="range_sensor_3" site="range_site_3" cutoff="10" />
-		<rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" />
-		<rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" />
-		<rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" />
-		<rangefinder name="range_sensor_7" site="range_site_7" cutoff="10" />
-		<rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" />
-		<rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" />
-		<rangefinder name="range_sensor_10" site="range_site_10" cutoff="10" />
+		<!-- <rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_7" site="range_site_7" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_10" site="range_site_10" cutoff="10" /> -->
   </sensor>
 </mujoco>

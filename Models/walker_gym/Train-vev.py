@@ -70,7 +70,7 @@ def make_env(seed=0):
 
 
 if __name__ == '__main__':
-	env_list = [make_env(0)]
+	env_list = [make_env(123456), make_env(123459), make_env(123458), make_env(123457)]
 
 	check_env(env)
 	# env_list = [make_env(0), make_env_1(1), ]
@@ -82,7 +82,10 @@ if __name__ == '__main__':
 
 	train_env.reset()
 
-	model = PPO("MlpPolicy", train_env, learning_rate=0.00005 ,verbose=1, gamma=0.999, clip_range=0.18, ent_coef=0.0,
+	model = PPO("MlpPolicy", train_env, batch_size=32, n_steps=512, n_epochs=20, gae_lambda= 0.95, learning_rate=5e-5 ,verbose=1, gamma=0.995, clip_range=0.1, ent_coef=4.5e-04,
+				create_eval_env= True, 
+				max_grad_norm=1,
+				vf_coef=0.87,
 				tensorboard_log=f"./run_logs/logs/{run.id}")
 	# model.load("Models_parkour_large_1")
 
