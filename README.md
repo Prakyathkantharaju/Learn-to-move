@@ -3,6 +3,21 @@ Reinforcement learning envs for locomotion systems. like walking, hopping and hu
 
 Written in python using stable-baselines3 and gym.
 
+- [Learn-to-move](#learn-to-move)
+	- [Install and setup](#install-and-setup)
+- [2D walker with eyes.](#2d-walker-with-eyes)
+	- [Training algorithm (PPO)](#training-algorithm-ppo)
+	- [Training details.](#training-details)
+- [Blind Hopper with disturbance](#blind-hopper-with-disturbance)
+	- [Training](#training)
+	- [Test](#test)
+	- [Performing video.](#performing-video)
+		- [Hard_evn](#hard_evn)
+		- [wall jump](#wall-jump)
+		- [small-no dist](#small-no-dist)
+	- [Important rendering](#important-rendering)
+	- [Notes on the dm control parkour.](#notes-on-the-dm-control-parkour)
+
 ## Install and setup
 Installing the depdencies
 ```bash
