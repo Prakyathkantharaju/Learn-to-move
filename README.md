@@ -9,6 +9,36 @@ Installing the depdencies
 pip install -r requirements.txt
 ```
 
+# 2D walker with eyes.
+
+In this project as show in the image below, we will use a 2D walker with eyes. IT has two rangefinder sensor. which measures the distance to the nearest obstacle / ground. 
+
+![](docs/images/walker/walker2d.png)
+
+## Training algorithm (PPO)
+I am using policy gradient algorithms to train the agent. specifically, I am using the PPO algorithm.
+
+- If you want to learn more about the algorithm, please refer to the [paper](https://arxiv.org/abs/1707.06347).
+- If you want to learn more about the policy gradient [here](https://youtu.be/y3oqOjHilio) is the tutorial which can get to you started. 
+
+## Training details.
+I am using the [stable-baselines3](https://github.com/DLR-RM/stable-baselines3) library to train the agent. I have pruned and updated the hyperparameters using [baselines3-rl-zoo](https://github.com/DLR-RM/rl-baselines3-zoo) and optuna to make the agent more stable. The hyperparameters and results are shown in the csv files [here](docs/images/walker/hyperparms).
+
+
+Before you can train you need to update the walker.xml file in the gym/envs/mujoco/assets folder with this [file](gym_envs/walker_openai/mujoco_models/walker2d.xml).
+
+
+To train the agent, run the following code.
+
+```bash
+python Models/walker2d/Train-vev.py
+```
+
+The output video will be recored by wandb, here is the link to my successful training.
+
+[](https://wandb.ai/continuous-optimization/hopper-env/reports/--VmlldzoyMjQzNzQ2?accessToken=erph06s1g4xxx71wh2cbyst8bnf13h9qts3revmayqsjfct5t5qv1s5tpbm7htcr)
+
+
 # Blind Hopper with disturbance
 
 In this env the hopper has not information about the surroundings. It's only objective is to **move forward with high velocity**.
