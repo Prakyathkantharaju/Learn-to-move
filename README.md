@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ```
 
 # 2D walker with eyes.
-
+https://user-images.githubusercontent.com/34353557/176432825-8555df0a-0498-4613-9177-eaf5b22ec798.mp4
 In this project as show in the image below, we will use a 2D walker with eyes. IT has two rangefinder sensor. which measures the distance to the nearest obstacle / ground. 
 
 ![](docs/images/walker/walker2d.png)
