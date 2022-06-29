@@ -53,7 +53,7 @@ python Models/walker2d/Train-vev.py
 
 The output video will be recored by wandb, here is the link to my successful training.
 
-[](https://wandb.ai/continuous-optimization/hopper-env/reports/--VmlldzoyMjQzNzQ2?accessToken=erph06s1g4xxx71wh2cbyst8bnf13h9qts3revmayqsjfct5t5qv1s5tpbm7htcr)
+[wandb report link](https://wandb.ai/continuous-optimization/hopper-env/reports/--VmlldzoyMjQzNzQ2?accessToken=erph06s1g4xxx71wh2cbyst8bnf13h9qts3revmayqsjfct5t5qv1s5tpbm7htcr)
 
 
 # Blind Hopper with disturbance
