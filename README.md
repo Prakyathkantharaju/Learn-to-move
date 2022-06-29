@@ -1,4 +1,4 @@
-# Learn-to-move
+# Learn-to-move    [![](https://raw.githubusercontent.com/wandb/assets/main/wandb-github-badge-gradient.svg)](https://wandb.ai/continuous-optimization/hopper-env/reports/Walker-with-eyes--VmlldzoyMjQzNzQ2?accessToken=erph06s1g4xxx71wh2cbyst8bnf13h9qts3revmayqsjfct5t5qv1s5tpbm7htcr)
 Reinforcement learning envs for locomotion systems. like walking, hopping and humanoid walking
 
 Written in python using stable-baselines3 and gym.
