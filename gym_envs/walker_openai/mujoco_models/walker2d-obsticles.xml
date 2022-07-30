@@ -6,43 +6,37 @@
   </default>
   <option integrator="RK4" timestep="0.002"/>
   <worldbody>
-			<body name="obsticle_1" pos="2.5 0 0" euler = "0 0 0">
-        <geom name="obsticle_1" pos="2.5 0 0" size="0.05 0.1 0.01" type="box"/>
+			<body name="obsticle_1" pos="7 0 0" euler = "0 0 0">
+        <geom name="obsticle_1" pos="7 0 0" size="0.4 0.2 0.01" type="box"/>
 			</body>
-			<body name="obsticle_2" pos="3 0 0" euler = "0 0 0">
-        <geom name="obsticle_2" pos="3 0 0" size="0.05 0.1 0.1" type="box"/>
+			<body name="obsticle_2" pos="7.6 0 0" euler = "0 0 0">
+        <geom name="obsticle_2" pos="7.6 0 0" size="0.4 0.2 0.05" type="box"/>
 			</body>
-			<body name="obsticle_3" pos="3.5 0 0" euler = "0 0 0">
-        <geom name="obsticle_3" pos="3.5 0 0" size="0.05 0.1 0.1" type="box"/>
+			<body name="obsticle_3" pos="8.4 0 0" euler = "0 0 0">
+        <geom name="obsticle_3" pos="8.4 0 0" size="0.4 0.2 0.1" type="box"/>
 			</body>
-			<body name="obsticle_4" pos="4 0 0" euler = "0 0 0">
-        <geom name="obsticle_4" pos="4 0 0" size="0.05 0.1 0.1" type="box"/>
+			<body name="obsticle_4" pos="9.2 0 0" euler = "0 0 0">
+        <geom name="obsticle_4" pos="9.2 0 0" size="0.4 0.2 0.05" type="box"/>
 			</body>
-			<body name="obsticle_5" pos="4.5 0 0" euler = "0 0 0">
-        <geom name="obsticle_5" pos="4.5 0 0" size="0.05 0.1 0.1" type="box"/>
+			<body name="obsticle_5" pos="10.0 0 0" euler = "0 0 0">
+        <geom name="obsticle_5" pos="10.0 0 0" size="0.4 0.2 0.05" type="box"/>
 			</body>
-			<body name="obsticle_6" pos="5 0 0" euler = "0 0 0">
-        <geom name="obsticle_6" pos="5 0 0" size="0.05 0.1 0.1" type="box"/>
-			</body>
-			<body name="obsticle_7" pos="1.5 0 0" euler = "0 0 0">
-        <geom name="obsticle_7" pos="1.5 0 0" size="0.05 0.1 0.1" type="box"/>
-			</body>
-			<body name="obsticle_8" pos="2 0 0" euler = "0 0 0">
-        <geom name="obsticle_8" pos="2 0 0" size="0.05 0.1 0.1" type="box"/>
+			<body name="obsticle_6" pos="10.8 0 0" euler = "0 0 0">
+        <geom name="obsticle_6" pos="10.8 0 0" size="0.4 0.2 0.1" type="box"/>
 			</body>
     <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
     <geom conaffinity="1" condim="3" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane" material="MatPlane"/>
     <body name="torso" pos="0 0 1.25">
     		<site name="range_site_1" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 110 0" type="cylinder"/>
 				<site name="range_site_2" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 115 0" type="cylinder"/>
-				<site name="range_site_3" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 120 0" type="cylinder"/>
-				<site name="range_site_4" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 125 0" type="cylinder"/>
-				<site name="range_site_5" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 130 0" type="cylinder"/>
-				<site name="range_site_6" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 135 0" type="cylinder"/>
-				<site name="range_site_7" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 140 0" type="cylinder"/>
-				<site name="range_site_8" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 145 0" type="cylinder"/>
-				<site name="range_site_9" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 150 0" type="cylinder"/>
-				<site name="range_site_10" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 155 0" type="cylinder"/>
+				<!-- <site name="range_site_3" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 120 0" type="cylinder"/> -->
+				<!-- <site name="range_site_4" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 125 0" type="cylinder"/> -->
+				<!-- <site name="range_site_5" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 130 0" type="cylinder"/> -->
+				<!-- <site name="range_site_6" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 135 0" type="cylinder"/> -->
+				<!-- <site name="range_site_7" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 140 0" type="cylinder"/> -->
+				<!-- <site name="range_site_8" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 145 0" type="cylinder"/> -->
+				<!-- <site name="range_site_9" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 150 0" type="cylinder"/> -->
+				<!-- <site name="range_site_10" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 155 0" type="cylinder"/> -->
 				<site name="accel_site" pos="0 0 1.35" size="0.01 0.01 0.01" euler="0 0 0" type="cylinder"/>
 				<site name="gyro_site" pos="0 0 1.35" size="0.01 0.01 0.01" euler="0 0 0" type="cylinder"/>
       <camera name="track" mode="trackcom" pos="0 -3 1" xyaxes="1 0 0 0 0 1"/>
@@ -98,13 +92,13 @@
   <sensor>
     <rangefinder name="range_sensor_1" site="range_site_1" cutoff="10" />
 		<rangefinder name="range_sensor_2" site="range_site_2" cutoff="10" />
-		<rangefinder name="range_sensor_3" site="range_site_3" cutoff="10" />
-		<rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" />
-		<rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" />
-		<rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" />
-		<rangefinder name="range_sensor_7" site="range_site_7" cutoff="10" />
-		<rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" />
-		<rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" />
-		<rangefinder name="range_sensor_10" site="range_site_10" cutoff="10" />
+		<!-- <rangefinder name="range_sensor_3" site="range_site_3" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_7" site="range_site_7" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" /> -->
+		<!-- <rangefinder name="range_sensor_10" site="range_site_10" cutoff="10" /> -->
   </sensor>
 </mujoco>
