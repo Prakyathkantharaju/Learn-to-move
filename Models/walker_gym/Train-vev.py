@@ -33,12 +33,15 @@ rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-obsticles-large.xml'
 path_2 = path_ + '/' + rel_path
 rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-obsticles.xml'
 path_3 = path_ + '/' + rel_path
+rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d_gap.xml'
+path_4 = path_ + '/' + rel_path
 # load environment
 from walker2d import Walker2dEnv
 
 env = Walker2dEnv(xml_file = path)
 env_1 = Walker2dEnv(xml_file = path_2)
 env_2 = Walker2dEnv(xml_file = path_3)
+env_3 = Walker2dEnv(xml_file = path_4)
 
 # wandb config
 config = {
@@ -81,10 +84,10 @@ def make_env(seed=0):
             print(f"env seed: {seed}")
             return env_2
         else:
-            env.seed(seed)
-            env.render()
+            env_3.seed(seed)
+            env_3.render()
             print(f"env seed: {seed}")
-            return env
+            return env_3
 
     set_random_seed(seed)
     return _init

@@ -52,6 +52,12 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self._exclude_current_positions_from_observation = (
             exclude_current_positions_from_observation
         )
+        self.x_position = 0.0
+        if 'gap' in xml_file:
+            self.gap = True
+            print("started gap")
+        else:
+            self.gap = False
 
         mujoco_env.MujocoEnv.__init__(
             self, xml_file, 4, **kwargs
@@ -79,6 +85,13 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         healthy_angle = min_angle < angle < max_angle
         is_healthy = healthy_z and healthy_angle
 
+        if self.gap:
+            if (15.2 < self.x_position < 15.7) or \
+                (20 < self.x_position < 21) or \
+                    (27 < self.x_position < 28) or \
+                        (32 < self.x_position < 34):
+                is_healthy = False
+
         return is_healthy
 
     @property
@@ -102,6 +115,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self.do_simulation(action, self.frame_skip)
         x_position_after = self.sim.data.qpos[0]
         x_velocity = (x_position_after - x_position_before) / self.dt
+        self.x_position = x_position_after
 
         # self.renderer.render_step()
 
