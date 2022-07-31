@@ -5,7 +5,7 @@ from gym.envs.mujoco import mujoco_env
 
 DEFAULT_CAMERA_CONFIG = {
     "trackbodyid": 2,
-    "distance": 4.0,
+    "distance": 6.0,
     "lookat": np.array((0.0, 0.0, 1.15)),
     "elevation": -20.0,
 }
@@ -27,10 +27,10 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self,
         xml_file="walker2d.xml",
         forward_reward_weight=2.0,
-        ctrl_cost_weight=1e-3,
+        ctrl_cost_weight=1e-5,
         healthy_reward=1.0,
         terminate_when_unhealthy=True,
-        healthy_z_range=(0.8, 2.0),
+        healthy_z_range=(0.6, 1.9),
         healthy_angle_range=(-1.0, 1.0),
         reset_noise_scale=5e-3,
         exclude_current_positions_from_observation=False,

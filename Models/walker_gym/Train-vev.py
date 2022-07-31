@@ -40,11 +40,11 @@ path_5 = path_ + '/' + rel_path
 # load environment
 from walker2d import Walker2dEnv
 
-env = Walker2dEnv(xml_file = path)
-env_1 = Walker2dEnv(xml_file = path_2)
-env_2 = Walker2dEnv(xml_file = path_3)
-env_3 = Walker2dEnv(xml_file = path_4)
-env_5 = Walker2dEnv(xml_file = path_5)
+env = Walker2dEnv(xml_file = path, exclude_current_positions_from_observation=True)
+env_1 = Walker2dEnv(xml_file = path_2, exclude_current_positions_from_observation =True)
+env_2 = Walker2dEnv(xml_file = path_3, exclude_current_positions_from_observation=True)
+env_3 = Walker2dEnv(xml_file = path_4, exclude_current_positions_from_observation=True)
+env_5 = Walker2dEnv(xml_file = path_5, exclude_current_positions_from_observation=True)
 
 # wandb config
 config = {
