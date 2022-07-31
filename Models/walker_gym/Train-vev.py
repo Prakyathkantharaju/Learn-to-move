@@ -35,6 +35,8 @@ rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-obsticles.xml'
 path_3 = path_ + '/' + rel_path
 rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d_gap.xml'
 path_4 = path_ + '/' + rel_path
+rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d_gap_2.xml'
+path_5 = path_ + '/' + rel_path
 # load environment
 from walker2d import Walker2dEnv
 
@@ -42,6 +44,7 @@ env = Walker2dEnv(xml_file = path)
 env_1 = Walker2dEnv(xml_file = path_2)
 env_2 = Walker2dEnv(xml_file = path_3)
 env_3 = Walker2dEnv(xml_file = path_4)
+env_5 = Walker2dEnv(xml_file = path_5)
 
 # wandb config
 config = {
@@ -68,26 +71,37 @@ def make_env(seed=0):
     """
     def _init():
         # env.reset()
-        if seed == 0:
+        if seed == 0 or seed == 5:
             env.seed(seed)
             env.render()
             print(f"env seed: {seed}")
-            return env
-        elif seed == 1:
+            return Monitor(env)
+        elif seed == 1 or seed == 6:
             env_1.seed(seed)
             env_1.render()
             print(f"env seed: {seed}")
-            return env_1
-        elif seed == 2:
+            return Monitor(env_1)
+        elif seed == 2 or seed == 7:
             env_2.seed(seed)
             env_2.render()
             print(f"env seed: {seed}")
-            return env_2
-        else:
+            return Monitor(env_2)
+        elif seed == 3 or seed == 8:
             env_3.seed(seed)
             env_3.render()
             print(f"env seed: {seed}")
-            return env_3
+            return Monitor(env_3)
+        elif seed == 4 or seed == 9:
+            env_5.seed(seed)
+            env_5.render()
+            print(f"env seed: {seed}")
+            return Monitor(env_5)
+        else:
+            env_5.seed(seed)
+            env_5.render()
+            print(f"env seed: {seed}")
+            return Monitor(env_5)
+
 
     set_random_seed(seed)
     return _init
@@ -100,7 +114,7 @@ if __name__ == '__main__':
     # env_list = [make_env(0), make_env_1(1), ]
 
     #train_env = SubprocVecEnv(env_list, start_method='fork')
-    n_procs = 5
+    n_procs = 10
     train_env = SubprocVecEnv([make_env(i) for i in range(n_procs)], start_method='fork')
     train_env = VecVideoRecorder(train_env, f'./run_logs/videos/{run.id}', record_video_trigger=lambda x: x % 100000 == 0, video_length = 2000)
 
@@ -113,7 +127,7 @@ if __name__ == '__main__':
                 tensorboard_log=f"./run_logs/logs/{run.id}")
     # model.load("Models_parkour_large_1")
 
-    model.learn(total_timesteps=5000000, log_interval=1, callback=WandbCallback(gradient_save_freq=1000,  model_save_freq=10000,
+    model.learn(total_timesteps=20000000, log_interval=1, callback=WandbCallback(gradient_save_freq=1000,  model_save_freq=10000,
                                     model_save_path=f"./run_logs/models/{run.id}", verbose=2))
 
 

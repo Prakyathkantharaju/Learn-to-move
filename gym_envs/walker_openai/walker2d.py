@@ -26,7 +26,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(
         self,
         xml_file="walker2d.xml",
-        forward_reward_weight=1.0,
+        forward_reward_weight=2.0,
         ctrl_cost_weight=1e-3,
         healthy_reward=1.0,
         terminate_when_unhealthy=True,
@@ -53,11 +53,14 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation
         )
         self.x_position = 0.0
-        if 'gap' in xml_file:
-            self.gap = True
-            print("started gap")
+        if 'gap_2' in xml_file:
+            self.gap = 2
+            print("started gap 2")
+        elif 'gap' in xml_file:
+            self.gap = 1
+            print("started gap 1")
         else:
-            self.gap = False
+            self.gap = 0
 
         mujoco_env.MujocoEnv.__init__(
             self, xml_file, 4, **kwargs
@@ -85,11 +88,17 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         healthy_angle = min_angle < angle < max_angle
         is_healthy = healthy_z and healthy_angle
 
-        if self.gap:
-            if (15.2 < self.x_position < 15.7) or \
+        if self.gap == 1:
+            if (15 < self.x_position < 15) or \
                 (20 < self.x_position < 21) or \
                     (27 < self.x_position < 28) or \
                         (32 < self.x_position < 34):
+                is_healthy = False
+        if self.gap == 2:
+            if (7 < self.x_position < 9) or \
+                (13 < self.x_position < 14) or \
+                    (18 < self.x_position < 20) or \
+                        (24 < self.x_position < 26):
                 is_healthy = False
 
         return is_healthy
@@ -107,7 +116,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         if self._exclude_current_positions_from_observation:
             position = position[1:]
 
-        observation = np.concatenate((position, velocity)).ravel()
+        observation = np.concatenate((position, velocity, rangefinder)).ravel()
         return observation
 
     def step(self, action):

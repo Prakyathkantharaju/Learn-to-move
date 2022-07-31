@@ -29,10 +29,10 @@
     <body name="torso" pos="0 0 1.25">
     		<site name="range_site_1" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 110 0" type="cylinder"/>
 				<site name="range_site_2" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 115 0" type="cylinder"/>
-				<!-- <site name="range_site_3" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 120 0" type="cylinder"/> -->
-				<!-- <site name="range_site_4" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 125 0" type="cylinder"/> -->
-				<!-- <site name="range_site_5" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 130 0" type="cylinder"/> -->
-				<!-- <site name="range_site_6" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 135 0" type="cylinder"/> -->
+				<site name="range_site_3" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 120 0" type="cylinder"/>
+				<site name="range_site_4" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 125 0" type="cylinder"/>
+				<site name="range_site_5" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 130 0" type="cylinder"/>
+				<site name="range_site_6" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 135 0" type="cylinder"/>
 				<!-- <site name="range_site_7" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 140 0" type="cylinder"/> -->
 				<!-- <site name="range_site_8" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 145 0" type="cylinder"/> -->
 				<!-- <site name="range_site_9" pos="0 0 1.55" size="0.01 0.01 0.01" euler="0 150 0" type="cylinder"/> -->
@@ -92,10 +92,10 @@
   <sensor>
     <rangefinder name="range_sensor_1" site="range_site_1" cutoff="10" />
 		<rangefinder name="range_sensor_2" site="range_site_2" cutoff="10" />
-		<!-- <rangefinder name="range_sensor_3" site="range_site_3" cutoff="10" /> -->
-		<!-- <rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" /> -->
-		<!-- <rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" /> -->
-		<!-- <rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" /> -->
+		<rangefinder name="range_sensor_3" site="range_site_3" cutoff="10" />
+		<rangefinder name="range_sensor_4" site="range_site_4" cutoff="10" />
+		<rangefinder name="range_sensor_5" site="range_site_5" cutoff="10" />
+		<rangefinder name="range_sensor_6" site="range_site_6" cutoff="10" />
 		<!-- <rangefinder name="range_sensor_7" site="range_site_7" cutoff="10" /> -->
 		<!-- <rangefinder name="range_sensor_8" site="range_site_8" cutoff="10" /> -->
 		<!-- <rangefinder name="range_sensor_9" site="range_site_9" cutoff="10" /> -->
