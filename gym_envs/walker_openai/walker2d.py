@@ -112,7 +112,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         position = self.sim.data.qpos.flat.copy()
         velocity = np.clip(self.sim.data.qvel.flat.copy(), -10, 10)
         rangefinder = self.sim.data.sensordata.flat.copy()
-        print(rangefinder.shape, position.shape)
+        # print(rangefinder.shape, position.shape)
 
         if self._exclude_current_positions_from_observation:
             position = position[1:]
