@@ -30,8 +30,8 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost_weight=1e-5,
         healthy_reward=1.0,
         terminate_when_unhealthy=True,
-        healthy_z_range=(0.6, 1.9),
-        healthy_angle_range=(-1.0, 1.0),
+        healthy_z_range=(0.9, 1.9),
+        healthy_angle_range=(-0.5, 0.5),
         reset_noise_scale=5e-3,
         exclude_current_positions_from_observation=False,
         **kwargs

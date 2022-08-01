@@ -33,9 +33,9 @@ rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-obsticles-large.xml'
 path_2 = path_ + '/' + rel_path
 rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-obsticles.xml'
 path_3 = path_ + '/' + rel_path
-rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d_gap.xml'
+rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-wall.xml'
 path_4 = path_ + '/' + rel_path
-rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d_gap_2.xml'
+rel_path = 'gym_envs/walker_openai/mujoco_models/walker2d-wall-2.xml'
 path_5 = path_ + '/' + rel_path
 # load environment
 from walker2d import Walker2dEnv
@@ -43,8 +43,8 @@ from walker2d import Walker2dEnv
 env = Walker2dEnv(xml_file = path, exclude_current_positions_from_observation=True)
 env_1 = Walker2dEnv(xml_file = path_2, exclude_current_positions_from_observation =True)
 env_2 = Walker2dEnv(xml_file = path_3, exclude_current_positions_from_observation=True)
-env_3 = Walker2dEnv(xml_file = path_4, exclude_current_positions_from_observation=True)
-env_5 = Walker2dEnv(xml_file = path_5, exclude_current_positions_from_observation=True)
+env_3 = Walker2dEnv(xml_file = path_4, exclude_current_positions_from_observation=True, healthy_z_range=(0.8, 2.5))
+env_5 = Walker2dEnv(xml_file = path_5, exclude_current_positions_from_observation=True, healthy_z_range=(0.8, 2.5))
 
 # wandb config
 config = {
