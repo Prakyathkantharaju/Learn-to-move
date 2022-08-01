@@ -27,7 +27,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self,
         xml_file="walker2d.xml",
         forward_reward_weight=2.0,
-        ctrl_cost_weight=1e-5,
+        ctrl_cost_weight=1e-2,
         healthy_reward=1.0,
         terminate_when_unhealthy=True,
         healthy_z_range=(0.9, 1.9),
