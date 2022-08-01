@@ -112,7 +112,6 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         position = self.sim.data.qpos.flat.copy()
         velocity = np.clip(self.sim.data.qvel.flat.copy(), -10, 10)
         rangefinder = self.sim.data.sensordata.flat.copy()
-        # print(rangefinder.shape, position.shape)
 
         if self._exclude_current_positions_from_observation:
             position = position[1:]
@@ -131,9 +130,11 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
         ctrl_cost = self.control_cost(action)
         forward_reward = self._forward_reward_weight * x_velocity
+        # remove it does not work
+        distance_reward = x_position_after * 0.1
         healthy_reward = self.healthy_reward
 
-        rewards = forward_reward + healthy_reward
+        rewards = forward_reward + healthy_reward + distance_reward
         costs = ctrl_cost
 
         observation = self._get_obs()
